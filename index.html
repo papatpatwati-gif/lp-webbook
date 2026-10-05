@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebBookify - Jasa Pembuatan Web Book, E-Book & Dashboard Analytics</title>
+    <meta name="description" content="Ubah karya tulis Anda menjadi Web Book interaktif lengkap dengan Text-to-Speech AI, proteksi login member, multi-bahasa, dan dashboard analytics real-time.">
+
+    <!-- Open Graph / WhatsApp / Facebook Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://webbookify.com/">
+    <meta property="og:title" content="WebBookify - Jasa Pembuatan Web Book & Dashboard Analytics">
+    <meta property="og:description" content="Publikasikan e-book interaktif modern dengan Text-to-Speech audio reader, dual bahasa, dan sistem login proteksi member.">
+    <meta property="og:image" content="https://webbookify.com/og-banner.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="WebBookify">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WebBookify - Jasa Pembuatan Web Book & Dashboard Analytics">
+    <meta name="twitter:description" content="Publikasikan e-book interaktif modern dengan Text-to-Speech audio reader, dual bahasa, dan sistem login proteksi member.">
+    <meta name="twitter:image" content="https://webbookify.com/og-banner.jpg">
+
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; frame-src 'self' https://kaffahmedia-e-book.web.app https://algoritma-waktu2.vercel.app; connect-src 'self' https:;">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for Admin Dashboard Demo -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #0284c7 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-tight text-slate-900">WebBook<span class="text-brand-600">ify</span></span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                    <a href="#fitur" class="hover:text-brand-600 transition-colors">Fitur Utama</a>
+                    <a href="#demo" class="hover:text-brand-600 transition-colors">Demo Interaktif & Dashboard</a>
+                    <a href="#templates" class="hover:text-brand-600 transition-colors">Pilihan Template</a>
+                    <a href="#harga" class="hover:text-brand-600 transition-colors">Paket Harga</a>
+                    <a href="#faq" class="hover:text-brand-600 transition-colors">FAQ</a>
+                    <a href="dashboard.html" class="text-brand-600 hover:text-brand-700 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-file-pen text-xs"></i> Form Materi</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button onclick="openOrderModal('Konsultasi Gratis')" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                        Konsultasi Gratis <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-3">
+            <a href="#fitur" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Fitur Utama</a>
+            <a href="#demo" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Demo Reader & Dashboard</a>
+            <a href="#templates" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Pilihan Template</a>
+            <a href="#harga" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Paket Harga</a>
+            <a href="#faq" class="block py-2 text-slate-600 font-medium hover:text-brand-600">FAQ</a>
+            <a href="dashboard.html" class="block py-2 text-brand-600 font-semibold hover:text-brand-700">Form Input Materi</a>
+            <button onclick="openOrderModal('Konsultasi Gratis')" class="w-full mt-2 bg-brand-600 text-white py-3 rounded-xl font-semibold shadow-md">
+                Konsultasi Gratis
+            </button>
+        </div>
+    </header>
+
+    <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.brand.100),white)] opacity-60"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Text Column -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-brand-50 border border-brand-200 text-brand-700 px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm">
+                        <span class="flex h-2 w-2 rounded-full bg-brand-600 animate-pulse"></span>
+                        <span>Solusi E-Book Interaktif & System Analytics #1</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                        Ubah Karya Tulis Menjadi <span class="gradient-text">Web Book & Dashboard System</span>
+                    </h1>
+
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Publikasikan karya Anda dalam format Web Book interaktif dengan fitur Text-to-Speech, Switch Multibahasa, Proteksi Akses Member, Export PDF, hingga Dashboard Admin Database real-time.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#harga" class="w-full sm:w-auto text-center bg-brand-600 hover:bg-brand-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-brand-500/25 transition-all hover:-translate-y-0.5">
+                            Pilih Paket Sekarang <i class="fa-solid fa-rocket ml-2"></i>
+                        </a>
+                        <a href="#demo" class="w-full sm:w-auto text-center bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-8 py-4 rounded-xl font-semibold text-lg transition-all">
+                            Uji Coba Demo & Dashboard <i class="fa-solid fa-chart-line ml-2 text-brand-600"></i>
+                        </a>
+                    </div>
+
+                    <!-- Micro Social Proof -->
+                    <div class="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-slate-500">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span>Desain Responsive</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span>Database Ready</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span>Text to Speech AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Card Visual -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-brand-500 to-accent-500 rounded-3xl blur-2xl opacity-20 animate-pulse"></div>
+
+                        <div class="relative bg-white rounded-2xl shadow-2xl border border-slate-200/80 p-6 space-y-6">
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <div class="flex space-x-2">
+                                    <div class="w-3 h-3 rounded-full bg-rose-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                                </div>
+                                <div class="bg-slate-100 px-3 py-1 rounded-md text-xs font-mono text-slate-500 flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-brand-600 text-[10px]"></i> admin-dashboard.com
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Dashboard Live Preview</span>
+                                    <span class="bg-emerald-100 text-emerald-700 text-xs px-2.5 py-0.5 rounded-full font-semibold">Database Active</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                        <div class="text-[11px] text-slate-500">Total Pembaca</div>
+                                        <div class="text-xl font-bold text-slate-800">12,840</div>
+                                    </div>
+                                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                        <div class="text-[11px] text-slate-500">Download PDF</div>
+                                        <div class="text-xl font-bold text-brand-600">3,420</div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-900 text-white rounded-xl p-3 flex items-center justify-between shadow-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                            <i class="fa-solid fa-user-check text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-medium text-slate-200">Sistem Akun Member</p>
+                                            <p class="text-[10px] text-slate-400">Proteksi Konten E-Book</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-emerald-400">Enabled</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="fitur" class="py-20 bg-white border-y border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <h2 class="text-xs font-extrabold tracking-widest text-brand-600 uppercase">Solusi Ekosistem Lengkap</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                    Segala Fitur Yang Anda Butuhkan Untuk Sukses Menyajikan Buku Digital
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Landing Page Marketing</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Desain landing page penjualan modern yang responsif, cepat, SEO friendly, dan teroptimasi tinggi untuk promosi digital ads.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-accent-500/10 text-accent-600 flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-accent-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-book-reader"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Web Book Interactive Reader</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Tampilan bacaan layaknya website interaktif dengan sistem bab, penanda halaman, serta layout membaca fleksibel di smartphone atau laptop.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Multibahasa (Multi-Language)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Satu buku dengan berbagai pilihan bahasa (Bahasa Indonesia, Inggris, dll.) yang dapat diganti pembaca hanya dengan satu klik.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Text-to-Speech (Audio Book)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Sistem suara bawaan yang dapat membacakan teks buku secara otomatis untuk pembaca yang lebih suka mendengarkan audio.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Export & Download PDF</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Fitur tombol cetak / simpan dalam format PDF ber-watermark untuk kenyamanan membaca secara offline kapan saja.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">System Login & Dashboard Admin</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Lengkap dengan otentikasi login pembaca serta dashboard admin database untuk mengelola pengguna, statistik baca, dan lisensi.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="py-20 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-10">
+                <h2 class="text-xs font-extrabold tracking-widest text-brand-600 uppercase">Demo Live Interaktif</h2>
+                <p class="text-3xl font-extrabold text-slate-900">Uji Coba Tampilan Reader & Dashboard Admin</p>
+                <p class="text-slate-600 text-sm">Pilih tab di bawah ini untuk mensimulasikan pengalaman Pembaca vs Pengelola (Admin).</p>
+            </div>
+
+            <!-- Tab Switcher Header -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-white p-1.5 rounded-2xl shadow-md border border-slate-200 inline-flex space-x-2">
+                    <button id="tab-btn-reader" onclick="switchDemoTab('reader')" class="px-6 py-3 rounded-xl text-sm font-bold transition-all bg-brand-600 text-white shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Tab 1: Web Book Reader</span>
+                    </button>
+                    <button id="tab-btn-dashboard" onclick="switchDemoTab('dashboard')" class="px-6 py-3 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Tab 2: Dashboard Database Admin</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 1: WEB BOOK READER SIMULATOR -->
+            <div id="demo-tab-reader" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 transition-all">
+                <!-- Toolbar Simulator -->
+                <div class="bg-slate-900 px-6 py-4 flex flex-wrap items-center justify-between gap-4 text-white">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-slate-400">Pilih Bahasa:</span>
+                        <div class="inline-flex rounded-lg bg-slate-800 p-1">
+                            <button id="lang-id-btn" onclick="switchLanguage('id')" class="px-3 py-1 text-xs font-bold rounded-md bg-brand-600 text-white transition-all">
+                                🇮🇩 Indonesia
+                            </button>
+                            <button id="lang-en-btn" onclick="switchLanguage('en')" class="px-3 py-1 text-xs font-bold rounded-md text-slate-300 hover:text-white transition-all">
+                                🇺🇸 English
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <button id="tts-play-btn" onclick="toggleTTS()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-2 transition-all">
+                            <i class="fa-solid fa-play" id="tts-icon"></i>
+                            <span id="tts-text">Dengarkan Text-to-Speech</span>
+                        </button>
+                        <button onclick="downloadPDFDemo()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 border border-slate-700">
+                            <i class="fa-solid fa-download"></i>
+                            <span>PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content Book View -->
+                <div class="p-8 md:p-12 space-y-6 min-h-[280px]">
+                    <div class="flex items-center justify-between text-xs text-slate-400 border-b pb-4">
+                        <span>MODUL 1 • DIGITAL PUBLISHING</span>
+                        <span class="text-brand-600 font-semibold" id="reading-status"><i class="fa-solid fa-eye"></i> Mode Baca Aktif</span>
+                    </div>
+
+                    <h3 id="demo-title" class="text-2xl font-bold text-slate-900 transition-all">
+                        Revolusi Cara Menyajikan Karya Tulis Anda
+                    </h3>
+
+                    <p id="demo-content" class="text-slate-600 leading-relaxed transition-all">
+                        Dengan Web Book interaktif, pembaca tidak perlu lagi repot mengunduh file PDF yang berat. Semua halaman disajikan secara cepat, aman, dan dapat disesuaikan dengan bahasa pilihan mereka. Sistem Text-to-Speech secara otomatis akan membacakan baris teks ini untuk kenyamanan membaca tinggi.
+                    </p>
+
+                    <!-- Animated Audio Visualizer Bar -->
+                    <div id="audio-wave" class="hidden items-center space-x-1 py-2">
+                        <span class="text-xs font-semibold text-emerald-600 mr-2">TTS AI Membaca:</span>
+                        <div class="w-1 h-4 bg-emerald-500 animate-bounce"></div>
+                        <div class="w-1 h-6 bg-emerald-500 animate-bounce delay-75"></div>
+                        <div class="w-1 h-3 bg-emerald-500 animate-bounce delay-150"></div>
+                        <div class="w-1 h-5 bg-emerald-500 animate-bounce delay-100"></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 px-8 py-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span>Halaman 1 dari 12</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-lock text-emerald-600"></i> Terproteksi Login Member</span>
+                </div>
+            </div>
+
+            <!-- TAB CONTENT 2: ADMIN DASHBOARD DATABASE DEMO -->
+            <div id="demo-tab-dashboard" class="hidden max-w-6xl mx-auto bg-slate-900 text-white rounded-2xl shadow-2xl overflow-hidden border border-slate-800">
+                <!-- Top Navigation Admin Bar -->
+                <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center font-bold text-white text-sm">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold">Admin Console & Analytics</div>
+                            <div class="text-[10px] text-slate-400">Database & Member Management</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4 text-xs">
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-mono flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Live Database
+                        </span>
+                        <div class="text-slate-400">Admin: <span class="text-white font-bold">budi.author@webbook.com</span></div>
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-8 space-y-8">
+                    <!-- Metric Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Total Pembaca Terdaftar</p>
+                                    <h4 class="text-2xl font-bold mt-1 text-white">1,428</h4>
+                                </div>
+                                <span class="p-2.5 rounded-lg bg-brand-500/20 text-brand-400"><i class="fa-solid fa-users text-sm"></i></span>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 mt-3 font-medium"><i class="fa-solid fa-arrow-up"></i> +12.4% bulan ini</p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Total PDF Download</p>
+                                    <h4 class="text-2xl font-bold mt-1 text-white">682</h4>
+                                </div>
+                                <span class="p-2.5 rounded-lg bg-accent-500/20 text-accent-400"><i class="fa-solid fa-file-arrow-down text-sm"></i></span>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 mt-3 font-medium"><i class="fa-solid fa-arrow-up"></i> +8.1% minggu ini</p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Penggunaan Audio TTS</p>
+                                    <h4 class="text-2xl font-bold mt-1 text-white">3,120 <span class="text-xs font-normal text-slate-400">kali</span></h4>
+                                </div>
+                                <span class="p-2.5 rounded-lg bg-amber-500/20 text-amber-400"><i class="fa-solid fa-volume-high text-sm"></i></span>
+                            </div>
+                            <p class="text-[11px] text-amber-400 mt-3 font-medium">Fitur Terpopuler</p>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/60">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Status Server Database</p>
+                                    <h4 class="text-2xl font-bold mt-1 text-emerald-400">99.9%</h4>
+                                </div>
+                                <span class="p-2.5 rounded-lg bg-emerald-500/20 text-emerald-400"><i class="fa-solid fa-server text-sm"></i></span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-3 font-medium">Koneksi Terenkripsi</p>
+                        </div>
+                    </div>
+
+                    <!-- Chart Section -->
+                    <div class="bg-slate-800/80 p-6 rounded-xl border border-slate-700/60 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div>
+                                <h4 class="font-bold text-slate-100">Statistik Kunjungan Pembaca & Aktivitas</h4>
+                                <p class="text-xs text-slate-400">Grafik pembaca mingguan real-time dari database</p>
+                            </div>
+                            <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-lg">7 Hari Terakhir</span>
+                        </div>
+                        <div class="h-64 w-full">
+                            <canvas id="dashboardChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Database User Table -->
+                    <div class="bg-slate-800/80 rounded-xl border border-slate-700/60 overflow-hidden space-y-4 p-6">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <div>
+                                <h4 class="font-bold text-slate-100">Database Pengguna & Lisensi Pembaca</h4>
+                                <p class="text-xs text-slate-400">Status login member dan aktivitas terakhir</p>
+                            </div>
+                            <!-- Table Filter Buttons -->
+                            <div class="flex items-center space-x-2 text-xs">
+                                <button onclick="filterTable('all')" class="bg-brand-600 text-white px-3 py-1.5 rounded-lg font-semibold" id="filter-all">Semua</button>
+                                <button onclick="filterTable('active')" class="bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg font-semibold" id="filter-active">Aktif</button>
+                                <button onclick="filterTable('vip')" class="bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg font-semibold" id="filter-vip">VIP Member</button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono">
+                                    <tr>
+                                        <th class="p-3">Nama Pembeli</th>
+                                        <th class="p-3">Email</th>
+                                        <th class="p-3">Tipe Akses</th>
+                                        <th class="p-3">Bahasa Favorit</th>
+                                        <th class="p-3">Status Akses</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700/50" id="user-table-body">
+                                    <tr data-type="vip" class="hover:bg-slate-700/30">
+                                        <td class="p-3 font-semibold text-white">Aditya Pratama</td>
+                                        <td class="p-3">aditya@gmail.com</td>
+                                        <td class="p-3"><span class="bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-mono text-[10px]">VIP Member</span></td>
+                                        <td class="p-3">Indonesia</td>
+                                        <td class="p-3"><span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Aktif</span></td>
+                                    </tr>
+                                    <tr data-type="active" class="hover:bg-slate-700/30">
+                                        <td class="p-3 font-semibold text-white">Siti Nurhaliza</td>
+                                        <td class="p-3">siti.nur@yahoo.com</td>
+                                        <td class="p-3"><span class="bg-brand-500/20 text-brand-300 px-2 py-0.5 rounded font-mono text-[10px]">Standard</span></td>
+                                        <td class="p-3">English</td>
+                                        <td class="p-3"><span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Aktif</span></td>
+                                    </tr>
+                                    <tr data-type="active" class="hover:bg-slate-700/30">
+                                        <td class="p-3 font-semibold text-white">Rian Hidayat</td>
+                                        <td class="p-3">rian.hid@gmail.com</td>
+                                        <td class="p-3"><span class="bg-brand-500/20 text-brand-300 px-2 py-0.5 rounded font-mono text-[10px]">Standard</span></td>
+                                        <td class="p-3">Indonesia</td>
+                                        <td class="p-3"><span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Aktif</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION CONTOH TEMPLATE WEB BOOK -->
+    <section id="templates" class="py-20 bg-white border-b border-slate-200/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-8">
+                <h2 class="text-xs font-extrabold tracking-widest text-brand-600 uppercase">Koleksi Desain Siap Pakai</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                    Pilihan Contoh Template Web Book
+                </p>
+                <p class="text-slate-600 text-base">
+                    Sesuaikan format buku digital Anda dengan gaya visual yang selaras dengan genre dan target pembaca.
+                </p>
+            </div>
+
+            <!-- Filter Kategori Genre -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-12">
+                <button onclick="filterTemplates('all')" data-category="all" class="template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-sm">
+                    Semua
+                </button>
+                <button onclick="filterTemplates('bisnis')" data-category="bisnis" class="template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900">
+                    <i class="fa-solid fa-briefcase mr-1.5 text-xs"></i> Bisnis
+                </button>
+                <button onclick="filterTemplates('coding')" data-category="coding" class="template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900">
+                    <i class="fa-solid fa-code mr-1.5 text-xs"></i> Coding
+                </button>
+                <button onclick="filterTemplates('fiksi')" data-category="fiksi" class="template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900">
+                    <i class="fa-solid fa-feather-pointed mr-1.5 text-xs"></i> Fiksi
+                </button>
+                <button onclick="filterTemplates('riset')" data-category="riset" class="template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900">
+                    <i class="fa-solid fa-graduation-cap mr-1.5 text-xs"></i> Riset
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Template Real Showcase: Arsitektur Kepemimpinan Ala Nabi -->
+                <div class="template-card group bg-slate-50 border border-emerald-300/80 rounded-2xl overflow-hidden hover:shadow-xl hover:border-emerald-500 transition-all flex flex-col justify-between" data-category="kepemimpinan">
+                    <div onclick="openTemplatePreview('kepemimpinan')" class="cursor-pointer">
+                        <div class="h-44 bg-gradient-to-br from-emerald-800 to-slate-900 p-4 relative flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-mono text-[10px]">Religi & Leadership</span>
+                                <span class="bg-emerald-400 text-slate-950 text-[10px] px-2 py-0.5 rounded font-bold">Proyek Nyata</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="text-xs text-emerald-200">Kaffah Media Series</div>
+                                <div class="font-extrabold text-lg leading-tight">Kepemimpinan Ala Nabi</div>
+                            </div>
+                            <div class="absolute -bottom-3 right-4 w-10 h-10 rounded-xl bg-white text-emerald-700 shadow-md flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-compass"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-7 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-base">Arsitektur Kepemimpinan Ala Nabi</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Gaya pembaca buku sirah & leadership dengan tipografi islami modern, struktur bab terperinci, dan kemudahan akses instan via web app.
+                            </p>
+                            <ul class="text-xs text-slate-500 space-y-1.5 pt-2">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Live di kaffahmedia-e-book.web.app</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> Pengalaman baca nyaman di smartphone</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center gap-2">
+                        <button onclick="openTemplatePreview('kepemimpinan', 'iframe')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 transition-all border border-slate-300 flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-window-maximize text-emerald-600 text-xs"></i> <span>Live Iframe</span>
+                        </button>
+                        <button onclick="openOrderModal('Template: Arsitektur Kepemimpinan Ala Nabi')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-800 transition-all border border-emerald-200 flex items-center justify-center gap-1.5">
+                            <span>Pilih</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Template Real Showcase 2: Algoritma Waktu -->
+                <div class="template-card group bg-slate-50 border border-amber-300/80 rounded-2xl overflow-hidden hover:shadow-xl hover:border-amber-500 transition-all flex flex-col justify-between" data-category="produktivitas">
+                    <div onclick="openTemplatePreview('produktivitas')" class="cursor-pointer">
+                        <div class="h-44 bg-gradient-to-br from-amber-700 via-amber-900 to-slate-900 p-4 relative flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-mono text-[10px]">Produktivitas & Time</span>
+                                <span class="bg-amber-400 text-slate-950 text-[10px] px-2 py-0.5 rounded font-bold">Proyek Nyata</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="text-xs text-amber-200">High Productivity Framework</div>
+                                <div class="font-extrabold text-lg leading-tight">Algoritma Waktu</div>
+                            </div>
+                            <div class="absolute -bottom-3 right-4 w-10 h-10 rounded-xl bg-white text-amber-600 shadow-md flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-7 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-base">Algoritma Waktu</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Produktivitas tinggi tanpa kehilangan keberkahan. Tata letak ringkas dengan fokus visual yang menenangkan untuk buku self-development.
+                            </p>
+                            <ul class="text-xs text-slate-500 space-y-1.5 pt-2">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600 text-[10px]"></i> Live di algoritma-waktu2.vercel.app</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600 text-[10px]"></i> Navigasi bab cepat dan nyaman</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center gap-2">
+                        <button onclick="openTemplatePreview('produktivitas', 'iframe')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 transition-all border border-slate-300 flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-window-maximize text-amber-600 text-xs"></i> <span>Live Iframe</span>
+                        </button>
+                        <button onclick="openOrderModal('Template: Algoritma Waktu')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 transition-all border border-amber-200 flex items-center justify-center gap-1.5">
+                            <span>Pilih</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Template 1: Business & Non-Fiction -->
+                <div class="template-card group bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-brand-300 transition-all flex flex-col justify-between" data-category="bisnis">
+                    <div onclick="openTemplatePreview('bisnis')" class="cursor-pointer">
+                        <div class="h-44 bg-gradient-to-br from-brand-600 to-slate-800 p-4 relative flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-mono text-[10px]">Non-Fiksi & Bisnis</span>
+                                <span class="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded font-bold">Populer</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="text-xs text-brand-200">Layout Clean & Elegant</div>
+                                <div class="font-extrabold text-lg leading-tight">Executive Reader</div>
+                            </div>
+                            <div class="absolute -bottom-3 right-4 w-10 h-10 rounded-xl bg-white text-brand-600 shadow-md flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-7 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-base">Executive Clean Reader</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Layout minimalis modern berfokus pada keterbacaan tinggi buku non-fiksi, self-improvement, dan panduan strategi bisnis.
+                            </p>
+                            <ul class="text-xs text-slate-500 space-y-1.5 pt-2">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Estimasi menit baca per bab</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Mode malam / eye-protection</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center gap-2">
+                        <button onclick="openTemplatePreview('bisnis')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 transition-all border border-slate-300 flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-eye text-brand-600 text-xs"></i> <span>Preview</span>
+                        </button>
+                        <button onclick="openOrderModal('Template: Executive Clean')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-brand-50 hover:bg-brand-600 hover:text-white text-brand-700 transition-all border border-brand-200 flex items-center justify-center gap-1.5">
+                            <span>Pilih</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Template 2: Tech & Documentation -->
+                <div class="template-card group bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-brand-300 transition-all flex flex-col justify-between" data-category="coding">
+                    <div onclick="openTemplatePreview('coding')" class="cursor-pointer">
+                        <div class="h-44 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800 p-4 relative flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-mono text-[10px]">Buku Teknis / IT</span>
+                                <span class="bg-indigo-500 text-white text-[10px] px-2 py-0.5 rounded font-bold">Developer Ready</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="text-xs text-indigo-300">Docs & Syntax Style</div>
+                                <div class="font-extrabold text-lg leading-tight">TechDocs Pro</div>
+                            </div>
+                            <div class="absolute -bottom-3 right-4 w-10 h-10 rounded-xl bg-white text-indigo-600 shadow-md flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-7 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-base">TechDocs Developer Book</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Sempurna untuk buku pemrograman, tutorial software, dan panduan teknis yang memerlukan blok kode interaktif.
+                            </p>
+                            <ul class="text-xs text-slate-500 space-y-1.5 pt-2">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Syntax code highlighter & copy</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Sidebar navigasi bertingkat</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center gap-2">
+                        <button onclick="openTemplatePreview('coding')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 transition-all border border-slate-300 flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-eye text-indigo-600 text-xs"></i> <span>Preview</span>
+                        </button>
+                        <button onclick="openOrderModal('Template: TechDocs Pro')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 transition-all border border-indigo-200 flex items-center justify-center gap-1.5">
+                            <span>Pilih</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Template 3: Creative Magazine / Novel -->
+                <div class="template-card group bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-brand-300 transition-all flex flex-col justify-between" data-category="fiksi">
+                    <div onclick="openTemplatePreview('fiksi')" class="cursor-pointer">
+                        <div class="h-44 bg-gradient-to-br from-amber-600 to-rose-700 p-4 relative flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-mono text-[10px]">Fiksi & Majalah</span>
+                                <span class="bg-amber-400 text-slate-900 text-[10px] px-2 py-0.5 rounded font-bold">Visual Rich</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="text-xs text-amber-200">Editorial & Ilustrasi</div>
+                                <div class="font-extrabold text-lg leading-tight">StoryEditorial</div>
+                            </div>
+                            <div class="absolute -bottom-3 right-4 w-10 h-10 rounded-xl bg-white text-amber-600 shadow-md flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-feather-pointed"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-7 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-base">StoryEditorial Novel</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Tampilan visual kaya gambar, tipografi novel serif yang artistik, serta pengalaman imersif untuk fiksi dan komik.
+                            </p>
+                            <ul class="text-xs text-slate-500 space-y-1.5 pt-2">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Galeri gambar resolusi tinggi</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Audio ambience & efek halaman</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center gap-2">
+                        <button onclick="openTemplatePreview('fiksi')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 transition-all border border-slate-300 flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-eye text-amber-600 text-xs"></i> <span>Preview</span>
+                        </button>
+                        <button onclick="openOrderModal('Template: StoryEditorial')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-700 transition-all border border-amber-200 flex items-center justify-center gap-1.5">
+                            <span>Pilih</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Template 4: Academic & Journal -->
+                <div class="template-card group bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-brand-300 transition-all flex flex-col justify-between" data-category="riset">
+                    <div onclick="openTemplatePreview('riset')" class="cursor-pointer">
+                        <div class="h-44 bg-gradient-to-br from-teal-700 to-slate-900 p-4 relative flex flex-col justify-between text-white">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-mono text-[10px]">Akademik & Jurnal</span>
+                                <span class="bg-teal-500 text-white text-[10px] px-2 py-0.5 rounded font-bold">Formal Paper</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="text-xs text-teal-200">Sitasi & Footnote</div>
+                                <div class="font-extrabold text-lg leading-tight">Scholar Journal</div>
+                            </div>
+                            <div class="absolute -bottom-3 right-4 w-10 h-10 rounded-xl bg-white text-teal-600 shadow-md flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-7 space-y-3">
+                            <h4 class="font-bold text-slate-900 text-base">Scholar Journal Paper</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Didesain khusus untuk tesis, e-jurnal ilmiah, dan publikasi penelitian berstandar sitasi dan daftar pustaka lengkap.
+                            </p>
+                            <ul class="text-xs text-slate-500 space-y-1.5 pt-2">
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Hover footnote & indeks referensi</li>
+                                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-600 text-[10px]"></i> Standarisasi PDF format cetak</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center gap-2">
+                        <button onclick="openTemplatePreview('riset')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 transition-all border border-slate-300 flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-eye text-teal-600 text-xs"></i> <span>Preview</span>
+                        </button>
+                        <button onclick="openOrderModal('Template: Scholar Journal')" class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold bg-teal-50 hover:bg-teal-600 hover:text-white text-teal-700 transition-all border border-teal-200 flex items-center justify-center gap-1.5">
+                            <span>Pilih</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="harga" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <h2 class="text-xs font-extrabold tracking-widest text-brand-600 uppercase">Pilihan Paket Investasi</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900">
+                    Paket Jasa Pembuatan Web Book & System
+                </p>
+                <p class="text-slate-600 text-base">
+                    Semua paket dirancang untuk performa terbaik dan siap langsung dipakai pamasaran.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 items-stretch">
+                
+                <!-- Package 1: Standar -->
+                <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Permulaan</span>
+                            <h3 class="text-2xl font-bold text-slate-900">Paket Standar</h3>
+                            <p class="text-slate-500 text-xs">Cocok untuk penulis individu atau e-book tunggal skala dasar.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100">
+                            <span class="text-4xl font-extrabold text-slate-900">Rp 1.490k</span>
+                            <span class="text-xs text-slate-500"> / sekali bayar</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-600 pt-4">
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Landing Page Marketing Basic</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Format Web Book Standar</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Support 1 Bahasa Utama</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Fitur Export / Download PDF</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-slate-400 line-through">
+                                <i class="fa-solid fa-xmark text-slate-300"></i>
+                                <span>Fitur Text-to-Speech (Audio)</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-slate-400 line-through">
+                                <i class="fa-solid fa-xmark text-slate-300"></i>
+                                <span>Sistem Login Member</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-slate-400 line-through">
+                                <i class="fa-solid fa-xmark text-slate-300"></i>
+                                <span>Dashboard Database Admin</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-8">
+                        <button onclick="openOrderModal('Paket Standar')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 py-3.5 rounded-xl font-bold transition-all">
+                            Pilih Paket Standar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 2: Profesional (Popular) -->
+                <div class="relative rounded-3xl border-2 border-brand-600 bg-white p-8 shadow-2xl flex flex-col justify-between transform lg:-translate-y-2">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-600 to-accent-600 text-white text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+                        Paling Populer
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-extrabold text-brand-600 uppercase tracking-wider">Rekomendasi Utama</span>
+                            <h3 class="text-2xl font-bold text-slate-900">Paket Profesional</h3>
+                            <p class="text-slate-500 text-xs">Sempurna untuk kreator, bisnis & peluncuran e-book komersial.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100">
+                            <span class="text-4xl font-extrabold text-slate-900">Rp 2.990k</span>
+                            <span class="text-xs text-slate-500"> / sekali bayar</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-600 pt-4">
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-circle-check text-brand-600"></i>
+                                <span>Landing Page Modern & Interaktif</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-circle-check text-brand-600"></i>
+                                <span>Dual Bahasa (ID & EN Multi-language)</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-circle-check text-brand-600"></i>
+                                <span>Fitur Text-to-Speech Audio Reader</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-circle-check text-brand-600"></i>
+                                <span>Export PDF dengan Watermark</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-circle-check text-brand-600"></i>
+                                <span>Sistem Login Member / Pembaca</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-circle-check text-brand-600"></i>
+                                <span>Dashboard Analytics Dasar</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-8">
+                        <button onclick="openOrderModal('Paket Profesional')" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-brand-500/30 transition-all">
+                            Pilih Paket Profesional
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Package 3: Enterprise -->
+                <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <span class="text-xs font-extrabold text-accent-600 uppercase tracking-wider">Kustom & Skala Besar</span>
+                            <h3 class="text-2xl font-bold text-slate-900">Paket Enterprise</h3>
+                            <p class="text-slate-500 text-xs">Untuk penerbit, lembaga edukasi & perusahaan besar.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100">
+                            <span class="text-4xl font-extrabold text-slate-900">Rp 5.990k</span>
+                            <span class="text-xs text-slate-500"> / sekali bayar</span>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-slate-600 pt-4">
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Landing Page Custom High-Level</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Unlimited Multi-language Support</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Text-to-Speech Suara AI Natural</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Export PDF Custom Layout</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Login Multi-role & Integration</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <i class="fa-solid fa-check text-emerald-500"></i>
+                                <span>Dashboard Database Analytics Full</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-8">
+                        <button onclick="openOrderModal('Paket Enterprise')" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-bold transition-all">
+                            Pilih Paket Enterprise
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="text-xs font-extrabold tracking-widest text-brand-600 uppercase">Pertanyaan Umum</h2>
+                <p class="text-3xl font-extrabold text-slate-900">Pertanyaan Yang Sering Diajukan</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="border border-slate-200 rounded-2xl bg-white overflow-hidden">
+                    <button onclick="toggleFAQ('faq-1')" class="w-full px-6 py-5 text-left font-bold text-slate-900 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                        <span>Berapa lama proses pengerjaan pembuatan Web Book?</span>
+                        <i id="icon-faq-1" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-1" class="hidden px-6 pb-5 text-slate-600 text-sm leading-relaxed">
+                        Proses pengerjaan standar berkisar antara 3 hingga 7 hari kerja tergantung pada paket yang dipilih serta kelengkapan materi naskah buku Anda.
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-2xl bg-white overflow-hidden">
+                    <button onclick="toggleFAQ('faq-2')" class="w-full px-6 py-5 text-left font-bold text-slate-900 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                        <span>Apakah saya mendapatkan akses penuh ke Dashboard Database Admin?</span>
+                        <i id="icon-faq-2" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-2" class="hidden px-6 pb-5 text-slate-600 text-sm leading-relaxed">
+                        Ya, untuk Paket Profesional dan Enterprise Anda akan diberikan akun admin khusus untuk memantau data pembaca, statistik download PDF, dan lisensi akun secara independen.
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-2xl bg-white overflow-hidden">
+                    <button onclick="toggleFAQ('faq-3')" class="w-full px-6 py-5 text-left font-bold text-slate-900 flex justify-between items-center hover:bg-slate-50 transition-colors">
+                        <span>Bagaimana cara kerja keamanan proteksi login member?</span>
+                        <i id="icon-faq-3" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="faq-3" class="hidden px-6 pb-5 text-slate-600 text-sm leading-relaxed">
+                        Pembaca diharuskan mendaftar/login menggunakan akun terverifikasi. Konten e-book dikunci dari akses publik dan dicegah dari tindakan pembajakan liar.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white pt-16 pb-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-12 gap-8 pb-12 border-b border-slate-800">
+                <div class="md:col-span-6 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white font-bold text-xl">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <span class="text-2xl font-extrabold tracking-tight">WebBook<span class="text-brand-500">ify</span></span>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                        Layanan profesional pembuatan Web Book, E-Book Interaktif, Landing Page Marketing, dan Platform Analytics Database modern.
+                    </p>
+                </div>
+
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200">Navigasi</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#fitur" class="hover:text-white transition-colors">Fitur Utama</a></li>
+                        <li><a href="#demo" class="hover:text-white transition-colors">Demo Interactive Reader & Dashboard</a></li>
+                        <li><a href="#templates" class="hover:text-white transition-colors">Pilihan Template</a></li>
+                        <li><a href="#harga" class="hover:text-white transition-colors">Paket Harga</a></li>
+                        <li><a href="#faq" class="hover:text-white transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-200">Kontak Direct</h4>
+                    <p class="text-sm text-slate-400">Konsultasikan kebutuhan projek Anda langsung bersama tim developer kami.</p>
+                    <button onclick="openOrderModal('Konsultasi Direct')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Chat via WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-8 text-center text-xs text-slate-500">
+                &copy; 2026 WebBookify. All rights reserved. Platform Jasa Pembuatan Web Book & Dashboard System.
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL PREVIEW INTERAKTIF TEMPLATE -->
+    <div id="template-preview-modal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-200 flex flex-col max-h-[92vh] overflow-hidden animate-fadeIn">
+            <!-- Modal Header Bar -->
+            <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
+                <div class="flex items-center space-x-3">
+                    <div id="preview-badge-icon" class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-sm font-bold text-white">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 id="preview-modal-title" class="font-bold text-base text-white">Executive Clean Reader</h3>
+                            <span id="preview-modal-genre" class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-brand-500/20 text-brand-300">Non-Fiksi</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Live Mockup Reader Simulation</p>
+                    </div>
+                </div>
+
+                <button onclick="closeTemplatePreview()" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Switcher Tabs & Mode Controls inside Preview -->
+            <div class="bg-slate-100 px-6 py-2.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="text-slate-500 font-medium hidden sm:inline">Pilihan Desain:</span>
+                    <div class="inline-flex gap-1.5" id="preview-quick-switch"></div>
+                </div>
+
+                <!-- Mode View Toggle (Mockup vs Live Iframe) -->
+                <div id="preview-mode-container" class="inline-flex items-center bg-white border border-slate-200 p-0.5 rounded-lg shadow-sm">
+                    <button id="mode-mockup-btn" onclick="setPreviewMode('mockup')" class="px-2.5 py-1 rounded-md font-bold text-xs bg-brand-600 text-white transition-all">
+                        <i class="fa-solid fa-layer-group mr-1 text-[10px]"></i> Mockup
+                    </button>
+                    <button id="mode-iframe-btn" onclick="setPreviewMode('iframe')" class="px-2.5 py-1 rounded-md font-semibold text-xs text-slate-600 hover:text-slate-900 transition-all flex items-center">
+                        <i class="fa-solid fa-globe mr-1 text-[10px]"></i> Live Iframe
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Mockup Canvas Area -->
+            <div id="preview-mockup-body" class="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-50 min-h-[460px]"></div>
+
+            <!-- Modal Footer Actions -->
+            <div class="bg-white px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <span class="text-xs text-slate-500"><i class="fa-solid fa-circle-info text-brand-600 mr-1.5"></i> Tata letak, warna, font, dan fitur dapat dikustomisasi sesuai permintaan.</span>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="closeTemplatePreview()" class="flex-1 sm:flex-none px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-all">Tutup Pratinjau</button>
+                    <button id="preview-apply-btn" onclick="applyTemplateFromPreview()" class="flex-1 sm:flex-none px-5 py-2.5 text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"><span>Pilih Template Ini</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="order-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-slate-100 relative space-y-6">
+            <button onclick="closeOrderModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="space-y-2">
+                <h3 class="text-2xl font-extrabold text-slate-900">Form Pemesanan Jasa</h3>
+                <p class="text-xs text-slate-500">Isi formulir berikut untuk terhubung langsung dengan tim sales via WhatsApp.</p>
+            </div>
+
+            <form id="whatsapp-form" onsubmit="submitToWhatsApp(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Lengkap</label>
+                    <input type="text" id="cust-name" required placeholder="Masukkan nama Anda" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-brand-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Paket Yang Dipilih</label>
+                    <input type="text" id="selected-package" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold text-brand-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan / Detail E-Book (Opsional)</label>
+                    <textarea id="cust-notes" rows="3" placeholder="Jelaskan judul e-book atau fitur khusus yang Anda butuhkan..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-brand-600"></textarea>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" onclick="redirectToDashboardWithPackage()" class="w-full mb-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
+                        <i class="fa-solid fa-file-lines text-indigo-600"></i> Lengkapi Materi di Dashboard Langsung &rarr;
+                    </button>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Lanjutkan ke WhatsApp</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Demo Tab Switcher (Reader vs Dashboard Admin)
+        let chartInitialized = false;
+        function switchDemoTab(tab) {
+            const readerTab = document.getElementById('demo-tab-reader');
+            const dashboardTab = document.getElementById('demo-tab-dashboard');
+            const btnReader = document.getElementById('tab-btn-reader');
+            const btnDashboard = document.getElementById('tab-btn-dashboard');
+
+            if (tab === 'reader') {
+                readerTab.classList.remove('hidden');
+                dashboardTab.classList.add('hidden');
+                btnReader.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all bg-brand-600 text-white shadow-md flex items-center gap-2";
+                btnDashboard.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-2";
+            } else {
+                readerTab.classList.add('hidden');
+                dashboardTab.classList.remove('hidden');
+                btnDashboard.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all bg-brand-600 text-white shadow-md flex items-center gap-2";
+                btnReader.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-2";
+
+                // Initialize Chart.js dynamically upon switching tab
+                if (!chartInitialized) {
+                    initDashboardChart();
+                    chartInitialized = true;
+                }
+            }
+        }
+
+        // Initialize Chart.js Analytics
+        function initDashboardChart() {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                    datasets: [
+                        {
+                            label: 'Pembaca Aktif',
+                            data: [120, 190, 300, 250, 420, 550, 610],
+                            borderColor: '#0284c7',
+                            backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Download PDF',
+                            data: [40, 65, 110, 85, 140, 210, 245],
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#94a3b8' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(51, 65, 85, 0.3)' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(51, 65, 85, 0.3)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Dashboard Table Filter Handler
+        function filterTable(category) {
+            const rows = document.querySelectorAll('#user-table-body tr');
+            const btnAll = document.getElementById('filter-all');
+            const btnActive = document.getElementById('filter-active');
+            const btnVip = document.getElementById('filter-vip');
+
+            // Reset Styles
+            [btnAll, btnActive, btnVip].forEach(b => b.className = "bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg font-semibold");
+
+            if (category === 'all') {
+                btnAll.className = "bg-brand-600 text-white px-3 py-1.5 rounded-lg font-semibold";
+                rows.forEach(r => r.style.display = '');
+            } else if (category === 'active') {
+                btnActive.className = "bg-brand-600 text-white px-3 py-1.5 rounded-lg font-semibold";
+                rows.forEach(r => {
+                    r.style.display = (r.getAttribute('data-type') === 'active' || r.getAttribute('data-type') === 'vip') ? '' : 'none';
+                });
+            } else if (category === 'vip') {
+                btnVip.className = "bg-brand-600 text-white px-3 py-1.5 rounded-lg font-semibold";
+                rows.forEach(r => {
+                    r.style.display = (r.getAttribute('data-type') === 'vip') ? '' : 'none';
+                });
+            }
+        }
+
+        // Filter Template Handlers
+        function filterTemplates(category) {
+            const cards = document.querySelectorAll('.template-card');
+            const buttons = document.querySelectorAll('.template-filter-btn');
+
+            buttons.forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.className = "template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-600 text-white shadow-sm";
+                } else {
+                    btn.className = "template-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900";
+                }
+            });
+
+            cards.forEach(card => {
+                const isMatch = category === 'all' || card.dataset.category === category;
+                card.style.display = isMatch ? '' : 'none';
+            });
+        }
+
+        // Template Preview Data & Functions
+        const templateData = {
+            kepemimpinan: {
+                id: 'kepemimpinan',
+                orderName: 'Template: Arsitektur Kepemimpinan Ala Nabi',
+                name: 'Arsitektur Kepemimpinan Ala Nabi',
+                genre: 'Leadership & Religi (Kaffah Media)',
+                icon: 'fa-compass',
+                colorClass: 'bg-emerald-700 text-white',
+                liveUrl: 'https://kaffahmedia-e-book.web.app/',
+                render: () => `
+                    <div class="max-w-2xl mx-auto bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-emerald-200 font-sans space-y-6">
+                        <div class="flex items-center justify-between text-xs text-slate-400 pb-3 border-b border-emerald-100">
+                            <span class="font-semibold text-emerald-700">KAFFAH MEDIA • ARSITEKTUR KEPEMIMPINAN</span>
+                            <a href="https://kaffahmedia-e-book.web.app/" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline font-bold flex items-center gap-1">
+                                <span>Buka Asli</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono uppercase text-emerald-600 tracking-wider font-bold">Studi Kasus Proyek Nyata</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight mt-1">Prinsip Keteladanan & Karakter Kepemimpinan Rasulullah ﷺ</h2>
+                            <p class="text-xs text-slate-500 mt-1">Format Web Book E-Book Kaffah Media</p>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed text-sm">
+                            Buku digital ini menyusun fondasi kepemimpinan yang kokoh berbasis teladan nubuwah. Melalui antarmuka Web Book interaktif, pembaca disajikan narasi hikmah yang mudah dinavigasikan bab demi bab langsung dari peramban ponsel pintar maupun laptop.
+                        </p>
+                        <div class="p-4 rounded-xl bg-emerald-50 border-l-4 border-emerald-600 text-xs text-emerald-950 leading-relaxed flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <span><strong>Akses Live Tersedia:</strong> Kunjungi situs aslinya untuk mencoba interaktivitas pembacaan buku ini.</span>
+                            <a href="https://kaffahmedia-e-book.web.app/" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold shrink-0 hover:bg-emerald-700 transition-colors">
+                                Buka Web Book <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                `
+            },
+            produktivitas: {
+                id: 'produktivitas',
+                orderName: 'Template: Algoritma Waktu',
+                name: 'Algoritma Waktu',
+                genre: 'Time Management & Spiritual Productivity',
+                icon: 'fa-hourglass-half',
+                colorClass: 'bg-amber-600 text-white',
+                liveUrl: 'https://algoritma-waktu2.vercel.app/',
+                render: () => `
+                    <div class="max-w-2xl mx-auto bg-[#faf8f5] rounded-2xl p-6 sm:p-10 shadow-sm border border-amber-200/80 font-sans space-y-6">
+                        <div class="flex items-center justify-between text-xs text-slate-400 pb-3 border-b border-amber-100">
+                            <span class="font-semibold text-amber-700">ALGORITMA WAKTU • BAB INTI</span>
+                            <a href="https://algoritma-waktu2.vercel.app/" target="_blank" rel="noopener noreferrer" class="text-amber-600 hover:underline font-bold flex items-center gap-1">
+                                <span>Buka Asli</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono uppercase text-amber-600 tracking-wider font-bold">Produktivitas & Keberkahan</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight mt-1">Menata Ritme Kerja yang Berkelanjutan</h2>
+                            <p class="text-xs text-slate-500 mt-1">Produktivitas Tinggi Tanpa Kehilangan Keberkahan</p>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed text-sm">
+                            Waktu bukan sekadar rentang detik yang dihabiskan untuk kesibukan, melainkan amanah untuk melipatgandakan manfaat. Dalam Web Book ini, pembaca diajak merestrukturisasi skala prioritas harian agar hasil kerja meningkat seiring ketenangan batin.
+                        </p>
+                        <div class="p-4 rounded-xl bg-amber-50 border-l-4 border-amber-600 text-xs text-amber-950 leading-relaxed flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <span><strong>Akses Live Tersedia:</strong> Uji langsung pengalaman baca interaktif buku ini di hosting Vercel.</span>
+                            <a href="https://algoritma-waktu2.vercel.app/" target="_blank" rel="noopener noreferrer" class="bg-amber-600 text-white px-3 py-1.5 rounded-lg font-bold shrink-0 hover:bg-amber-700 transition-colors">
+                                Kunjungi Web Book <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                `
+            },
+            bisnis: {
+                id: 'bisnis',
+                orderName: 'Template: Executive Clean',
+                name: 'Executive Clean Reader',
+                genre: 'Non-Fiksi & Bisnis',
+                icon: 'fa-briefcase',
+                colorClass: 'bg-brand-600 text-white',
+                render: () => `
+                    <div class="max-w-2xl mx-auto bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200 font-sans space-y-6">
+                        <div class="flex items-center justify-between text-xs text-slate-400 pb-3 border-b border-slate-100">
+                            <span class="font-semibold text-brand-600">BAGIAN 2 • STRATEGI SKALABILITAS</span>
+                            <span><i class="fa-solid fa-clock text-[10px]"></i> Estimasi 6 Menit</span>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">Membangun Fondasi Sistem Bisnis Digital yang Berkelanjutan</h2>
+                            <p class="text-xs text-slate-400 mt-1">Oleh: Raymond S. - Praktisi Venture Builder</p>
+                        </div>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-brand-600 h-full rounded-full" style="width: 45%"></div>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed text-sm">
+                            Dalam era informasi saat ini, nilai tertinggi sebuah karya literatur terletak pada kemudahan eksekusi ide. Saat pembaca mengakses halaman Anda melalui Web Book, interaktivitas antarmuka menghilangkan hambatan download dokumen konvensional.
+                        </p>
+                        <div class="p-4 rounded-xl bg-brand-50 border-l-4 border-brand-600 text-xs text-brand-900 leading-relaxed">
+                            <strong>Executive Key Takeaway:</strong> Pembaca eksekutif menghargai kecepatan referensi, navigasi instan antar bab, dan penanda highlight otomatis di smartphone mereka.
+                        </div>
+                    </div>
+                `
+            },
+            coding: {
+                id: 'coding',
+                orderName: 'Template: TechDocs Pro',
+                name: 'TechDocs Developer Book',
+                genre: 'Buku Teknis & IT',
+                icon: 'fa-code',
+                colorClass: 'bg-indigo-600 text-white',
+                render: () => `
+                    <div class="max-w-3xl mx-auto bg-slate-900 rounded-2xl border border-slate-800 text-slate-200 overflow-hidden font-mono text-xs shadow-xl">
+                        <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <span class="ml-2 text-slate-400 font-semibold">docs/03-authentication.ts</span>
+                            </div>
+                            <span class="text-[10px] bg-indigo-600/30 text-indigo-300 px-2 py-0.5 rounded">TypeScript v5.x</span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="text-slate-400 font-sans text-sm">
+                                <strong class="text-white text-base">3. Implementasi Middleware Token Autentikasi</strong>
+                                <p class="text-xs text-slate-400 mt-1">Gunakan kode di bawah ini untuk memvalidasi token sesi pembaca sebelum menyajikan konten e-book terproteksi:</p>
+                            </div>
+                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800/80 overflow-x-auto text-[11px] leading-relaxed">
+                                <span class="text-purple-400">export async function</span> <span class="text-blue-400">verifyReaderAccess</span>(req: ReaderRequest) {<br>
+                                &nbsp;&nbsp;<span class="text-purple-400">const</span> token = req.headers[<span class="text-emerald-300">'authorization'</span>];<br>
+                                &nbsp;&nbsp;<span class="text-purple-400">if</span> (!token) <span class="text-purple-400">return</span> { authorized: <span class="text-rose-400">false</span>, message: <span class="text-amber-300">'Login required'</span> };<br>
+                                &nbsp;&nbsp;<span class="text-slate-500">// Token validasi berhasil</span><br>
+                                &nbsp;&nbsp;<span class="text-purple-400">return</span> { authorized: <span class="text-emerald-400">true</span>, tier: <span class="text-emerald-300">'VIP_READER'</span> };<br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            fiksi: {
+                id: 'fiksi',
+                orderName: 'Template: StoryEditorial',
+                name: 'StoryEditorial Novel',
+                genre: 'Fiksi & Majalah',
+                icon: 'fa-feather-pointed',
+                colorClass: 'bg-amber-600 text-white',
+                render: () => `
+                    <div class="max-w-2xl mx-auto bg-[#faf6ee] rounded-2xl p-6 sm:p-12 shadow-md border border-amber-200/60 font-serif space-y-6 text-slate-800">
+                        <div class="text-center space-y-2 pb-4 border-b border-amber-200/50">
+                            <span class="font-sans text-[10px] tracking-widest uppercase text-amber-700 font-bold">Kisah Petualangan Kabut Utara</span>
+                            <h2 class="text-3xl sm:text-4xl font-normal text-slate-900 italic">Bab I: Denting Lonceng Malam Hari</h2>
+                        </div>
+                        <p class="leading-relaxed text-base text-slate-800 first-letter:float-left first-letter:text-5xl first-letter:pr-3 first-letter:font-bold first-letter:text-amber-800 first-letter:leading-none">
+                            Hujan salju pertama turun lebih cepat dari dugaan para tetua desa. Lentera tembaga di gerbang batas kota bergoyang pelan tertiup angin utara, memancarkan bayang-bayang samar ke dinding batu kastel kuno.
+                        </p>
+                        <p class="leading-relaxed text-sm text-slate-700 font-sans italic border-l-2 border-amber-400 pl-4">
+                            "Tidak ada yang berani melintasi ngarai saat salju merah turun, kecuali mereka yang mencari takdir baru."
+                        </p>
+                        <div class="text-center pt-4 font-sans text-xs text-amber-800/60">
+                            ❦ ❦ ❦
+                        </div>
+                    </div>
+                `
+            },
+            riset: {
+                id: 'riset',
+                orderName: 'Template: Scholar Journal',
+                name: 'Scholar Journal Paper',
+                genre: 'Akademik & Jurnal',
+                icon: 'fa-graduation-cap',
+                colorClass: 'bg-teal-700 text-white',
+                render: () => `
+                    <div class="max-w-2xl mx-auto bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-300 font-sans space-y-5 text-slate-800">
+                        <div class="border-b border-slate-300 pb-3 text-[11px] font-mono text-slate-500 flex justify-between">
+                            <span>DOI: 10.1080/wb.2026.04910</span>
+                            <span>Vol. 14, No. 2, pp. 45–59</span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">Analisis Retensi Pembaca Menggunakan Platform Web Book Interaktif</h2>
+                            <p class="text-xs text-slate-500 mt-1 font-serif italic">Departemen Teknologi Informasi & Komunikasi Edukasi</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-slate-700">Abstract</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Studi ini mengevaluasi dampak penyajian literatur digital berbasis Web Book terhadap tingkat konsentrasi dan penyelesaian materi bacaan. Temuan menunjukkan peningkatan retensi membaca sebesar 34.2% dibandingkan format statis konvensional.
+                            </p>
+                            <div class="text-[10px] text-slate-500 pt-1 font-mono">
+                                <strong>Keywords:</strong> Digital Publishing, E-Book UX, Interactive Web Reader, Retensi Baca.
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        let activePreviewTemplate = 'bisnis';
+        let activePreviewMode = 'mockup'; // 'mockup' | 'iframe'
+
+        function openTemplatePreview(key, preferredMode = null) {
+            activePreviewTemplate = key;
+            const data = templateData[key];
+            if (!data) return;
+
+            if (preferredMode) {
+                activePreviewMode = preferredMode;
+            } else if (!data.liveUrl && activePreviewMode === 'iframe') {
+                activePreviewMode = 'mockup';
+            }
+
+            document.getElementById('preview-modal-title').textContent = data.name;
+            document.getElementById('preview-modal-genre').textContent = data.genre;
+            document.getElementById('preview-badge-icon').className = `w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${data.colorClass}`;
+            document.getElementById('preview-badge-icon').innerHTML = `<i class="fa-solid ${data.icon}"></i>`;
+
+            // Update mode switcher visibility based on liveUrl availability
+            const modeContainer = document.getElementById('preview-mode-container');
+            if (data.liveUrl) {
+                modeContainer.classList.remove('hidden');
+            } else {
+                activePreviewMode = 'mockup';
+                modeContainer.classList.add('hidden');
+            }
+
+            // Render quick template switcher buttons
+            const switcherContainer = document.getElementById('preview-quick-switch');
+            switcherContainer.innerHTML = Object.keys(templateData).map(k => {
+                const isCurrent = k === key;
+                const hasLive = Boolean(templateData[k].liveUrl);
+                return `<button onclick="openTemplatePreview('${k}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${isCurrent ? 'bg-slate-900 text-white font-bold' : 'bg-white text-slate-600 hover:bg-slate-200'}">
+                    ${hasLive ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
+                    <span>${templateData[k].name.split(' ')[0]}</span>
+                </button>`;
+            }).join('');
+
+            renderPreviewContent();
+            document.getElementById('template-preview-modal').classList.remove('hidden');
+        }
+
+        function setPreviewMode(mode) {
+            const data = templateData[activePreviewTemplate];
+            if (mode === 'iframe' && !data.liveUrl) return;
+            activePreviewMode = mode;
+            renderPreviewContent();
+        }
+
+        function renderPreviewContent() {
+            const data = templateData[activePreviewTemplate];
+            const bodyEl = document.getElementById('preview-mockup-body');
+            const btnMockup = document.getElementById('mode-mockup-btn');
+            const btnIframe = document.getElementById('mode-iframe-btn');
+
+            if (activePreviewMode === 'iframe' && data.liveUrl) {
+                btnIframe.className = "px-2.5 py-1 rounded-md font-bold text-xs bg-brand-600 text-white transition-all";
+                btnMockup.className = "px-2.5 py-1 rounded-md font-semibold text-xs text-slate-600 hover:text-slate-900 transition-all";
+
+                bodyEl.innerHTML = `
+                    <div class="w-full h-full min-h-[480px] flex flex-col rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+                        <div class="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center justify-between text-xs text-slate-500">
+                            <div class="flex items-center gap-2 truncate">
+                                <i class="fa-solid fa-lock text-emerald-600 text-[11px]"></i>
+                                <span class="font-mono text-[11px] truncate text-slate-700">${data.liveUrl}</span>
+                            </div>
+                            <a href="${data.liveUrl}" target="_blank" rel="noopener noreferrer" class="hover:text-brand-600 flex items-center gap-1 font-semibold text-[11px] text-slate-700 shrink-0 ml-3">
+                                <span>Tab Baru</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            </a>
+                        </div>
+                        <iframe id="live-preview-iframe" src="${data.liveUrl}" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" class="w-full flex-1 min-h-[440px] border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                `;
+            } else {
+                btnMockup.className = "px-2.5 py-1 rounded-md font-bold text-xs bg-brand-600 text-white transition-all";
+                btnIframe.className = "px-2.5 py-1 rounded-md font-semibold text-xs text-slate-600 hover:text-slate-900 transition-all";
+                bodyEl.innerHTML = data.render();
+            }
+        }
+
+        function closeTemplatePreview() {
+            // Clear container to stop any background iframe activity
+            document.getElementById('preview-mockup-body').innerHTML = '';
+            document.getElementById('template-preview-modal').classList.add('hidden');
+        }
+
+        function applyTemplateFromPreview() {
+            const data = templateData[activePreviewTemplate];
+            closeTemplatePreview();
+            openOrderModal(data.orderName);
+        }
+
+        // Close preview modal on backdrop click or Escape key
+        document.getElementById('template-preview-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'template-preview-modal') {
+                closeTemplatePreview();
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeTemplatePreview();
+            }
+        });
+
+        // Multibahasa Demo Switcher Logic
+        const contentData = {
+            id: {
+                title: "Revolusi Cara Menyajikan Karya Tulis Anda",
+                content: "Dengan Web Book interaktif, pembaca tidak perlu lagi repot mengunduh file PDF yang berat. Semua halaman disajikan secara cepat, aman, dan dapat disesuaikan dengan bahasa pilihan mereka. Sistem Text-to-Speech secara otomatis akan membacakan baris teks ini untuk kenyamanan membaca tinggi."
+            },
+            en: {
+                title: "Revolutionizing How You Present Your Written Work",
+                content: "With an interactive Web Book, readers no longer need to download heavy PDF files. All pages are presented quickly, securely, and customizable in their preferred language. The Text-to-Speech system automatically reads this text aloud for maximum comfort."
+            }
+        };
+
+        let currentLang = 'id';
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const titleEl = document.getElementById('demo-title');
+            const contentEl = document.getElementById('demo-content');
+            const btnId = document.getElementById('lang-id-btn');
+            const btnEn = document.getElementById('lang-en-btn');
+
+            titleEl.textContent = contentData[lang].title;
+            contentEl.textContent = contentData[lang].content;
+
+            if (lang === 'id') {
+                btnId.className = "px-3 py-1 text-xs font-bold rounded-md bg-brand-600 text-white transition-all";
+                btnEn.className = "px-3 py-1 text-xs font-bold rounded-md text-slate-300 hover:text-white transition-all";
+            } else {
+                btnEn.className = "px-3 py-1 text-xs font-bold rounded-md bg-brand-600 text-white transition-all";
+                btnId.className = "px-3 py-1 text-xs font-bold rounded-md text-slate-300 hover:text-white transition-all";
+            }
+
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+                updateTTSUI(false);
+            }
+        }
+
+        // Web Speech API Text-To-Speech
+        function toggleTTS() {
+            if ('speechSynthesis' in window) {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                    updateTTSUI(false);
+                } else {
+                    const textToRead = document.getElementById('demo-content').textContent;
+                    const utterance = new SpeechSynthesisUtterance(textToRead);
+                    utterance.lang = currentLang === 'id' ? 'id-ID' : 'en-US';
+                    
+                    utterance.onend = function() {
+                        updateTTSUI(false);
+                    };
+
+                    speechSynthesis.speak(utterance);
+                    updateTTSUI(true);
+                }
+            } else {
+                alert('Browser Anda tidak mendukung fitur Web Speech API.');
+            }
+        }
+
+        function updateTTSUI(playing) {
+            const icon = document.getElementById('tts-icon');
+            const text = document.getElementById('tts-text');
+            const wave = document.getElementById('audio-wave');
+
+            if (playing) {
+                icon.className = "fa-solid fa-square";
+                text.textContent = "Hentikan Suara Audio";
+                wave.classList.remove('hidden');
+                wave.classList.add('flex');
+            } else {
+                icon.className = "fa-solid fa-play";
+                text.textContent = "Dengarkan Text-to-Speech";
+                wave.classList.add('hidden');
+                wave.classList.remove('flex');
+            }
+        }
+
+        function downloadPDFDemo() {
+            window.print();
+        }
+
+        // Modal Order Handlers
+        function openOrderModal(packageName) {
+            document.getElementById('selected-package').value = packageName;
+            document.getElementById('order-modal').classList.remove('hidden');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.add('hidden');
+        }
+
+        function redirectToDashboardWithPackage() {
+            const pkg = document.getElementById('selected-package').value || 'Paket Standar';
+            closeOrderModal();
+            window.location.href = `dashboard.html?package=${encodeURIComponent(pkg)}`;
+        }
+
+        function submitToWhatsApp(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value;
+            const pkg = document.getElementById('selected-package').value;
+            const notes = document.getElementById('cust-notes').value;
+
+            const targetPhone = "6281234567890";
+            const message = `Halo WebBookify, saya berminat untuk memesan/konsultasi layanan pembuatan Web Book.%0A%0A*Detail Pemesanan:*%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Paket Dipilih:* ${encodeURIComponent(pkg)}%0A- *Catatan:* ${encodeURIComponent(notes || '-')}`;
+
+            window.open(`https://wa.me/${targetPhone}?text=${message}`, '_blank', 'noopener,noreferrer');
+            closeOrderModal();
+        }
+
+        // FAQ Toggle
+        function toggleFAQ(id) {
+            const faqEl = document.getElementById(id);
+            const iconEl = document.getElementById('icon-' + id);
+            
+            if (faqEl.classList.contains('hidden')) {
+                faqEl.classList.remove('hidden');
+                iconEl.classList.add('rotate-180');
+            } else {
+                faqEl.classList.add('hidden');
+                iconEl.classList.remove('rotate-180');
+            }
+        }
+    </script>
+</body>
+</html>

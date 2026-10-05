@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Konfigurasi & Penyerahan Materi Web Book</title>
+
+  <!-- Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; connect-src 'self' https:;">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-8 px-4 font-sans antialiased">
+
+  <div class="max-w-4xl mx-auto" x-data="configForm()">
+    
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <div class="mb-4 flex items-center justify-between flex-wrap gap-2">
+        <a href="index.html" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> <span>Kembali ke Beranda</span>
+        </a>
+        <div class="flex items-center gap-3 text-[11px]">
+          <span class="text-slate-400 flex items-center gap-1.5" x-show="lastSavedTime">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Draf tersimpan (<span x-text="lastSavedTime"></span>)</span>
+          </span>
+          <button type="button" @click="resetDraft()" class="text-rose-400 hover:text-rose-300 hover:underline">
+            Reset Formulir
+          </button>
+        </div>
+      </div>
+      <span class="text-xs font-semibold uppercase tracking-widest text-indigo-400 bg-indigo-950/60 border border-indigo-800/50 px-3 py-1 rounded-full">Web Book Studio</span>
+      <h1 class="text-2xl md:text-3xl font-bold mt-3 text-white">Konfigurasi & Penyerahan Materi</h1>
+      <p class="text-slate-400 text-sm mt-1">Lengkapi detail materi dan spesifikasi fitur web book yang ingin dibuat.</p>
+    </header>
+
+    <!-- Stepper Navigation -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between relative">
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-800 -z-10"></div>
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-indigo-600 transition-all duration-300 -z-10"
+             :style="`width: ${((step - 1) / 3) * 100}%`"></div>
+
+        <template x-for="(stepName, index) in steps" :key="index">
+          <div class="flex flex-col items-center">
+            <button @click="goToStep(index + 1)" 
+                    class="w-9 h-9 rounded-full flex items-center justify-center font-medium text-sm transition-all border"
+                    :class="step >= (index + 1) ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-600/30' : 'bg-slate-800 border-slate-700 text-slate-400'">
+              <span x-text="index + 1"></span>
+            </button>
+            <span class="text-[11px] mt-2 font-medium hidden sm:block" 
+                  :class="step >= (index + 1) ? 'text-indigo-300' : 'text-slate-500'" 
+                  x-text="stepName"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Main Card Container -->
+    <div class="bg-slate-800/80 backdrop-blur-md border border-slate-700/60 rounded-2xl p-6 md:p-8 shadow-xl">
+
+      <!-- Paket Selector Banner -->
+      <div class="mb-8 pb-6 border-b border-slate-700/60">
+        <div class="flex items-center justify-between mb-3">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            Pilihan Paket Layanan
+          </label>
+          <span class="text-[11px] text-slate-400">Fitur di bawah otomatis menyesuaikan paket</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <template x-for="pkg in availablePackages" :key="pkg.name">
+            <button type="button" @click="setPackage(pkg.name)"
+                    class="p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between relative overflow-hidden"
+                    :class="formData.selectedPackage === pkg.name ? 'border-indigo-500 bg-indigo-950/60 shadow-lg ring-1 ring-indigo-500' : 'border-slate-700/80 bg-slate-900/40 hover:border-slate-600'">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded font-semibold" :class="pkg.badgeClass" x-text="pkg.badge"></span>
+                <span class="w-2 h-2 rounded-full" :class="formData.selectedPackage === pkg.name ? 'bg-emerald-400' : 'bg-slate-600'"></span>
+              </div>
+              <div class="mt-2.5">
+                <span class="text-xs font-bold text-white block" x-text="pkg.name"></span>
+                <span class="text-sm font-extrabold text-emerald-400" x-text="pkg.price"></span>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-1" x-text="pkg.price"></span>
+            </button>
+          </template>
+        </div>
+      </div>
+
+      <!-- ================= STEP 1: INFORMASI BUKU ================= -->
+      <div x-show="step === 1" x-transition.opacity.duration.300ms>
+        <h2 class="text-xl font-semibold text-white mb-1">1. Informasi Dasar Buku</h2>
+        <p class="text-sm text-slate-400 mb-6">Data ini akan ditampilkan di halaman utama dan meta SEO web book Anda.</p>
+
+        <div class="space-y-5">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Judul Utama Buku *</label>
+            <input type="text" x-model="formData.title" placeholder="Contoh: Berpikir Bersama AI" 
+                   class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Subjudul / Tagline (Opsional)</label>
+            <input type="text" x-model="formData.subtitle" placeholder="Contoh: Panduan Navigasi Kritis di Era Kecerdasan Buatan" 
+                   class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nama Penulis / Penyusun *</label>
+              <input type="text" x-model="formData.author" placeholder="Nama atau Institusi Penulis" 
+                     class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Kategori / Topik *</label>
+              <input type="text" x-model="formData.category" placeholder="Contoh: Teknologi, Bisnis, Self-Help" 
+                     class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Deskripsi Singkat / Blurb *</label>
+            <textarea x-model="formData.description" rows="3" placeholder="Ringkasan isi buku untuk tampilan landing page..." 
+                      class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Unggah Sampul Utama (Cover Image)</label>
+            <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/50 rounded-xl p-4 text-center cursor-pointer transition bg-slate-900/40 relative">
+              <input type="file" @change="handleCoverUpload" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+              <div class="flex flex-col items-center justify-center space-y-2">
+                <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-xs text-slate-400" x-text="formData.coverFileName ? formData.coverFileName : 'Klik atau drag file gambar cover di sini (PNG, JPG, WEBP)'"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visual Branding: Logo & Favicon -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300">Logo Web Book (Header Navbar)</label>
+                <button type="button" x-show="formData.logoFileName" @click="removeLogo()" class="text-[11px] text-rose-400 hover:text-rose-300 hover:underline flex items-center gap-1 transition">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  <span>Hapus</span>
+                </button>
+              </div>
+              <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/50 rounded-xl p-3 text-center cursor-pointer transition bg-slate-900/40 relative">
+                <input type="file" x-ref="logoInput" @change="handleLogoUpload" accept="image/png,image/svg+xml,image/jpeg,image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                <div class="flex items-center justify-center space-x-2">
+                  <template x-if="formData.logoDataUrl">
+                    <img :src="formData.logoDataUrl" alt="Logo Preview" class="h-6 w-auto object-contain rounded" />
+                  </template>
+                  <template x-if="!formData.logoDataUrl">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                  </template>
+                  <span class="text-xs text-slate-400 truncate max-w-[200px]" x-text="formData.logoFileName ? formData.logoFileName : 'Unggah Logo (PNG/SVG transparan)'"></span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300">Favicon Browser (Tab Icon)</label>
+                <button type="button" x-show="formData.faviconFileName" @click="removeFavicon()" class="text-[11px] text-rose-400 hover:text-rose-300 hover:underline flex items-center gap-1 transition">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  <span>Hapus</span>
+                </button>
+              </div>
+              <div class="border-2 border-dashed border-slate-700 hover:border-indigo-500/50 rounded-xl p-3 text-center cursor-pointer transition bg-slate-900/40 relative">
+                <input type="file" x-ref="faviconInput" @change="handleFaviconUpload" accept="image/x-icon,image/png,image/svg+xml" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                <div class="flex items-center justify-center space-x-2">
+                  <template x-if="formData.faviconDataUrl">
+                    <img :src="formData.faviconDataUrl" alt="Favicon Preview" class="h-5 w-5 object-contain rounded" />
+                  </template>
+                  <template x-if="!formData.faviconDataUrl">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                  </template>
+                  <span class="text-xs text-slate-400 truncate max-w-[200px]" x-text="formData.faviconFileName ? formData.faviconFileName : 'Unggah Favicon (ICO/PNG 32x32)'"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= STEP 2: STRUKTUR & MATERI ================= -->
+      <div x-show="step === 2" x-cloak x-transition.opacity.duration.300ms>
+        <h2 class="text-xl font-semibold text-white mb-1">2. Penyerahan Materi Buku</h2>
+        <p class="text-sm text-slate-400 mb-6">Pilih metode penyerahan materi dan susun struktur bab sesuai keinginan Anda.</p>
+
+        <div class="space-y-6">
+          <!-- Opsi Metode Source -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Metode Penyerahan Materi Source *</label>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <label class="border rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition"
+                     :class="formData.sourceMethod === 'drive' ? 'border-indigo-500 bg-indigo-950/30 text-white' : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-600'">
+                <input type="radio" x-model="formData.sourceMethod" value="drive" class="hidden" />
+                <svg class="w-6 h-6 mb-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                <span class="text-xs font-medium">Link Google Drive / Docs / Notion</span>
+              </label>
+
+              <label class="border rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition"
+                     :class="formData.sourceMethod === 'upload' ? 'border-indigo-500 bg-indigo-950/30 text-white' : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-600'">
+                <input type="radio" x-model="formData.sourceMethod" value="upload" class="hidden" />
+                <svg class="w-6 h-6 mb-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                <span class="text-xs font-medium">Upload PDF / Word Utuh</span>
+              </label>
+
+              <label class="border rounded-xl p-3 flex flex-col items-center text-center cursor-pointer transition"
+                     :class="formData.sourceMethod === 'per_chapter' ? 'border-indigo-500 bg-indigo-950/30 text-white' : 'border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-600'">
+                <input type="radio" x-model="formData.sourceMethod" value="per_chapter" class="hidden" />
+                <svg class="w-6 h-6 mb-2 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                <span class="text-xs font-medium">Kirim Terpisah per Bab</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Form Berdasarkan Metode -->
+          <div x-show="formData.sourceMethod === 'drive'" class="p-4 bg-slate-900/60 border border-slate-700 rounded-xl space-y-3">
+            <label class="block text-xs font-semibold text-slate-300">Tautan / Link Dokumen</label>
+            <input type="url" x-model="formData.driveUrl" placeholder="https://docs.google.com/... atau link Drive/Notion" 
+                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
+            <p class="text-[11px] text-slate-400">*Pastikan akses tautan sudah dibuka (Anyone with link can view/edit).</p>
+          </div>
+
+          <div x-show="formData.sourceMethod === 'upload'" class="p-4 bg-slate-900/60 border border-slate-700 rounded-xl space-y-3">
+            <label class="block text-xs font-semibold text-slate-300">Upload File Dokumen Utama (PDF/DOCX/TXT)</label>
+            <input type="file" @change="handleDocumentUpload" class="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
+          </div>
+
+          <!-- Dynamic Chapter Structure -->
+          <div class="pt-4 border-t border-slate-700/60">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-semibold text-white">Daftar Isi & Struktur Bab</h3>
+                <p class="text-xs text-slate-400">Tentukan urutan bab agar struktur navigasi web book sesuai.</p>
+              </div>
+              <button @click="addChapter()" type="button" class="px-3 py-1.5 bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/50 text-indigo-200 text-xs font-medium rounded-lg transition flex items-center gap-1">
+                <span>+ Tambah Bab</span>
+              </button>
+            </div>
+
+            <div class="space-y-3">
+              <template x-for="(chap, index) in formData.chapters" :key="index">
+                <div class="flex items-center gap-3 bg-slate-900/80 p-3 rounded-lg border border-slate-700/80">
+                  <span class="text-xs font-semibold text-indigo-400 w-12 text-center" x-text="`Bab ${index + 1}`"></span>
+                  <input type="text" x-model="chap.title" placeholder="Judul Bab / Topik..." 
+                         class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
+                  <button @click="removeChapter(index)" type="button" class="text-slate-500 hover:text-red-400 transition px-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                  </button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= STEP 3: TAMPILAN & FITUR ================= -->
+      <div x-show="step === 3" x-cloak x-transition.opacity.duration.300ms>
+        <h2 class="text-xl font-semibold text-white mb-1">3. Tampilan & Fitur Interaktif</h2>
+        <p class="text-sm text-slate-400 mb-6">Sesuaikan tema warna dan aktifkan fitur interaktif sesuai kebutuhan pembaca Anda.</p>
+
+        <div class="space-y-6">
+          <!-- Pilihan Preset Warna -->
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Preset Tema Warna Utama</label>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <template x-for="theme in themes" :key="theme.id">
+                <div @click="formData.selectedTheme = theme.id" 
+                     class="border rounded-xl p-3 cursor-pointer transition flex flex-col justify-between"
+                     :class="formData.selectedTheme === theme.id ? 'border-indigo-500 bg-indigo-950/30' : 'border-slate-700 bg-slate-900/50 hover:border-slate-600'">
+                  <span class="text-xs font-medium text-slate-200" x-text="theme.name"></span>
+                  <div class="flex gap-1.5 mt-3">
+                    <div class="w-4 h-4 rounded-full" :style="`background-color: ${theme.bg}`"></div>
+                    <div class="w-4 h-4 rounded-full" :style="`background-color: ${theme.accent}`"></div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Pilihan Bahasa Sesuai Paket -->
+          <div class="pt-4 border-t border-slate-700/60">
+            <div class="flex items-center justify-between mb-2">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300">Dukungan Bahasa (Multi-Language)</label>
+              <span class="text-[11px] font-semibold text-emerald-400" x-text="formData.selectedPackage === 'Paket Standar' ? '1 Bahasa Utama (ID)' : (formData.selectedPackage === 'Paket Profesional' ? 'Dual Bahasa (ID & EN)' : 'Unlimited Multi-Language')"></span>
+            </div>
+            <div class="p-3 bg-slate-900/60 border border-slate-700/80 rounded-xl flex items-center justify-between text-xs">
+              <div class="text-slate-300 flex items-center gap-2">
+                <template x-if="formData.selectedPackage === 'Paket Standar'">
+                  <span>🇮🇩 Bahasa Indonesia (Standar)</span>
+                </template>
+                <template x-if="formData.selectedPackage === 'Paket Profesional'">
+                  <span>🇮🇩 Bahasa Indonesia &nbsp;+&nbsp; 🇺🇸 English (Dual Bahasa)</span>
+                </template>
+                <template x-if="formData.selectedPackage === 'Paket Enterprise'">
+                  <span>🌐 Indonesia, English, & Bahasa Tambahan Bebas Kustom</span>
+                </template>
+              </div>
+              <span x-show="formData.selectedPackage === 'Paket Standar'" class="text-[10px] text-slate-500 font-mono">Paket Standar: 1 Bahasa</span>
+              <span x-show="formData.selectedPackage === 'Paket Profesional'" class="text-[10px] text-brand-400 font-mono font-semibold">Aktif (Paket Pro)</span>
+              <span x-show="formData.selectedPackage === 'Paket Enterprise'" class="text-[10px] text-accent-400 font-mono font-semibold">Full Unlimited</span>
+            </div>
+          </div>
+
+          <!-- Fitur Interaktif Checkboxes -->
+          <div class="pt-4 border-t border-slate-700/60">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">Spesifikasi Fitur Sistem Sesuai Paket</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              
+              <!-- 1. TTS -->
+              <label class="flex items-start p-3 bg-slate-900/60 border rounded-xl transition"
+                     :class="!canAccess('tts') ? 'opacity-50 cursor-not-allowed border-slate-800' : 'cursor-pointer border-slate-700/80 hover:border-slate-600'">
+                <input type="checkbox" x-model="formData.features.tts" :disabled="!canAccess('tts')" class="mt-1 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-0" />
+                <div class="ml-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-200">Text-to-Speech (Audio)</span>
+                    <span x-show="!canAccess('tts')" class="text-[9px] bg-rose-950 text-rose-300 border border-rose-800 px-1.5 py-0.5 rounded font-medium">Terkunci (Paket Pro+)</span>
+                    <span x-show="canAccess('tts') && formData.selectedPackage === 'Paket Profesional'" class="text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-1.5 py-0.5 rounded font-medium">Audio Reader</span>
+                    <span x-show="formData.selectedPackage === 'Paket Enterprise'" class="text-[9px] bg-accent-950 text-accent-300 border border-accent-800 px-1.5 py-0.5 rounded font-medium">Suara AI Natural</span>
+                  </div>
+                  <span class="text-[11px] text-slate-400">Sistem suara otomatis membaca naskah untuk pembaca.</span>
+                </div>
+              </label>
+
+              <!-- 2. Login Member -->
+              <label class="flex items-start p-3 bg-slate-900/60 border rounded-xl transition"
+                     :class="!canAccess('memberLogin') ? 'opacity-50 cursor-not-allowed border-slate-800' : 'cursor-pointer border-slate-700/80 hover:border-slate-600'">
+                <input type="checkbox" x-model="formData.features.memberLogin" :disabled="!canAccess('memberLogin')" class="mt-1 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-0" />
+                <div class="ml-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-200">Sistem Login Member</span>
+                    <span x-show="!canAccess('memberLogin')" class="text-[9px] bg-rose-950 text-rose-300 border border-rose-800 px-1.5 py-0.5 rounded font-medium">Terkunci (Paket Pro+)</span>
+                    <span x-show="canAccess('memberLogin') && formData.selectedPackage === 'Paket Profesional'" class="text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-1.5 py-0.5 rounded font-medium">Login Pembaca</span>
+                    <span x-show="formData.selectedPackage === 'Paket Enterprise'" class="text-[9px] bg-accent-950 text-accent-300 border border-accent-800 px-1.5 py-0.5 rounded font-medium">Multi-role & Integrasi</span>
+                  </div>
+                  <span class="text-[11px] text-slate-400">Proteksi konten buku agar hanya dapat diakses akun pembeli resmi.</span>
+                </div>
+              </label>
+
+              <!-- 3. Dashboard Admin -->
+              <label class="flex items-start p-3 bg-slate-900/60 border rounded-xl transition"
+                     :class="!canAccess('adminDashboard') ? 'opacity-50 cursor-not-allowed border-slate-800' : 'cursor-pointer border-slate-700/80 hover:border-slate-600'">
+                <input type="checkbox" x-model="formData.features.adminDashboard" :disabled="!canAccess('adminDashboard')" class="mt-1 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-0" />
+                <div class="ml-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-200">Dashboard Database Admin</span>
+                    <span x-show="!canAccess('adminDashboard')" class="text-[9px] bg-rose-950 text-rose-300 border border-rose-800 px-1.5 py-0.5 rounded font-medium">Terkunci (Paket Pro+)</span>
+                    <span x-show="canAccess('adminDashboard') && formData.selectedPackage === 'Paket Profesional'" class="text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-1.5 py-0.5 rounded font-medium">Analytics Dasar</span>
+                    <span x-show="formData.selectedPackage === 'Paket Enterprise'" class="text-[9px] bg-accent-950 text-accent-300 border border-accent-800 px-1.5 py-0.5 rounded font-medium">Full Analytics Database</span>
+                  </div>
+                  <span class="text-[11px] text-slate-400">Panel pengelola untuk memantau pembaca aktif dan statistik e-book.</span>
+                </div>
+              </label>
+
+              <!-- 4. Progress Tracker -->
+              <label class="flex items-start p-3 bg-slate-900/60 border border-slate-700/80 rounded-xl cursor-pointer hover:border-slate-600 transition">
+                <input type="checkbox" x-model="formData.features.progress" class="mt-1 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-0" />
+                <div class="ml-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-200">Progress Tracker & Bookmark</span>
+                    <span class="text-[9px] bg-slate-800 text-slate-300 border border-slate-700 px-1.5 py-0.5 rounded font-medium">Semua Paket</span>
+                  </div>
+                  <span class="text-[11px] text-slate-400">Penyimpan posisi halaman baca terakhir di browser pembaca.</span>
+                </div>
+              </label>
+
+              <!-- 5. Export / Download PDF Option -->
+              <div class="p-3 bg-slate-900/60 border border-slate-700/80 rounded-xl">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-semibold text-slate-200">Export / Download PDF</span>
+                  <span class="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                        :class="formData.selectedPackage === 'Paket Standar' ? 'bg-slate-800 text-slate-300' : (formData.selectedPackage === 'Paket Profesional' ? 'bg-brand-950 text-brand-300 border border-brand-800' : 'bg-accent-950 text-accent-300 border border-accent-800')"
+                        x-text="formData.selectedPackage === 'Paket Standar' ? 'PDF Standar' : (formData.selectedPackage === 'Paket Profesional' ? 'Watermark Aktif' : 'Custom Layout')"></span>
+                </div>
+                <span class="text-[11px] text-slate-400 block" x-text="formData.selectedPackage === 'Paket Standar' ? 'Fitur unduh / cetak dokumen PDF standar tanpa watermark.' : (formData.selectedPackage === 'Paket Profesional' ? 'Fitur unduh PDF dengan watermark proteksi lisensi.' : 'Kustomisasi layout cetak PDF eksklusif perusahaan.')"></span>
+              </div>
+
+              <!-- 6. Embed Media Interaktif -->
+              <label class="flex items-start p-3 bg-slate-900/60 border rounded-xl transition"
+                     :class="!canAccess('embeds') ? 'opacity-50 cursor-not-allowed border-slate-800' : 'cursor-pointer border-slate-700/80 hover:border-slate-600'">
+                <input type="checkbox" x-model="formData.features.embeds" :disabled="!canAccess('embeds')" class="mt-1 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-0" />
+                <div class="ml-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-200">Embed Media Interaktif</span>
+                    <span x-show="!canAccess('embeds')" class="text-[9px] bg-rose-950 text-rose-300 border border-rose-800 px-1.5 py-0.5 rounded font-medium">Khusus Enterprise</span>
+                    <span x-show="canAccess('embeds')" class="text-[9px] bg-accent-950 text-accent-300 border border-accent-800 px-1.5 py-0.5 rounded font-medium">Tersedia</span>
+                  </div>
+                  <span class="text-[11px] text-slate-400">Dukungan integrasi media YouTube, Spotify, atau Podcast.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Custom Domain Option -->
+          <div class="pt-4 border-t border-slate-700/60">
+            <div class="flex items-center justify-between mb-2">
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300">Pilihan Subdomain / Custom Domain</label>
+              <span x-show="formData.selectedPackage === 'Paket Standar'" class="text-[10px] text-amber-400 font-medium">Subdomain webbook.id bawaan untuk Paket Standar</span>
+            </div>
+            <input type="text" x-model="formData.customDomain" :placeholder="formData.selectedPackage === 'Paket Standar' ? 'namabuku.webbook.id (Subdomain)' : 'namabuku.com atau namabuku.webbook.id'" 
+                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
+          </div>
+
+          <!-- ================= LIVE PREVIEW SIMULATOR ================= -->
+          <div class="pt-6 border-t border-slate-700/60">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Live Interactive Reader Preview
+                </label>
+                <p class="text-[11px] text-slate-400">Pratinjau antarmuka pembaca Web Book langsung diperbarui saat opsi diubah.</p>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700 bg-slate-900/80 text-slate-300" x-text="formData.selectedPackage"></span>
+            </div>
+
+            <!-- Simulated Window Frame -->
+            <div class="rounded-2xl border border-slate-700 shadow-2xl overflow-hidden text-xs transition-colors duration-300"
+                 :style="`background-color: ${currentTheme.bg}; color: ${currentTheme.text}; border-color: ${currentTheme.border};`">
+              
+              <!-- Browser Topbar -->
+              <div class="px-4 py-2.5 border-b flex items-center justify-between gap-2"
+                   :style="`background-color: ${currentTheme.headerBg}; border-color: ${currentTheme.border};`">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                  <template x-if="formData.faviconDataUrl">
+                    <img :src="formData.faviconDataUrl" class="w-3.5 h-3.5 ml-2 object-contain rounded-sm" />
+                  </template>
+                  <span class="ml-1.5 font-mono text-[10px] opacity-70" x-text="`https://${formData.customDomain || 'buku-anda.webbook.id'}`"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span x-show="formData.features.progress" class="text-[10px] px-2 py-0.5 rounded opacity-80" :style="`background-color: ${currentTheme.cardBg}`">
+                    <i class="fa-solid fa-bookmark mr-1"></i> Bookmark Aktif
+                  </span>
+                </div>
+              </div>
+
+              <!-- Web Book Main Navbar -->
+              <div class="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-3"
+                   :style="`background-color: ${currentTheme.cardBg}; border-color: ${currentTheme.border};`">
+                <div class="flex items-center gap-2 max-w-[220px]">
+                  <template x-if="formData.logoDataUrl">
+                    <img :src="formData.logoDataUrl" alt="Logo" class="h-5 w-auto object-contain" />
+                  </template>
+                  <div class="font-bold truncate" :style="`color: ${currentTheme.accent}`" x-text="formData.title || 'Judul Web Book'"></div>
+                </div>
+                
+                <!-- Package-dependent Reader Controls -->
+                <div class="flex items-center gap-2 flex-wrap">
+                  <!-- Multilingual Selector -->
+                  <div class="flex items-center rounded-lg px-2 py-1 text-[10px] font-bold"
+                       :style="`background-color: ${currentTheme.headerBg}; border: 1px solid ${currentTheme.border};`">
+                    <span>🇮🇩 ID</span>
+                    <span x-show="formData.selectedPackage !== 'Paket Standar'" class="mx-1 opacity-40">|</span>
+                    <span x-show="formData.selectedPackage !== 'Paket Standar'" class="opacity-70">🇺🇸 EN</span>
+                  </div>
+
+                  <!-- TTS Audio Reader Button -->
+                  <span x-show="formData.features.tts" 
+                        class="px-2 py-1 rounded-lg text-[10px] font-semibold text-white flex items-center gap-1"
+                        :style="`background-color: ${currentTheme.accent};`">
+                    <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                    <span x-text="formData.selectedPackage === 'Paket Enterprise' ? 'TTS Natural AI' : 'Dengarkan Audio'"></span>
+                  </span>
+
+                  <!-- Member Login Status Badge -->
+                  <span x-show="formData.features.memberLogin" 
+                        class="px-2 py-1 rounded-lg text-[10px] font-semibold border"
+                        :style="`border-color: ${currentTheme.accent}; color: ${currentTheme.accent};`">
+                    <i class="fa-solid fa-user-check mr-0.5"></i> <span x-text="formData.selectedPackage === 'Paket Enterprise' ? 'VIP Multi-Role' : 'Member'"></span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Web Book Reading Area with Sidebar -->
+              <div class="grid grid-cols-1 md:grid-cols-12 min-h-[220px]">
+                <!-- Sidebar TOC Navigation -->
+                <aside class="md:col-span-4 p-3 border-r space-y-1.5"
+                       :style="`background-color: ${currentTheme.sidebarBg}; border-color: ${currentTheme.border};`">
+                  <div class="text-[10px] uppercase font-bold tracking-wider opacity-60 mb-2">Daftar Isi Bab</div>
+                  <template x-for="(chap, idx) in formData.chapters" :key="idx">
+                    <button type="button" @click="previewChapter = idx"
+                            class="w-full text-left p-2 rounded-lg text-[11px] transition flex items-center justify-between"
+                            :style="previewChapter === idx ? `background-color: ${currentTheme.cardBg}; font-weight: bold; color: ${currentTheme.accent};` : 'opacity: 0.85;'">
+                      <span class="truncate" x-text="`${idx + 1}. ${chap.title || 'Bab Tanpa Judul'}`"></span>
+                      <span x-show="previewChapter === idx">&rsaquo;</span>
+                    </button>
+                  </template>
+                </aside>
+
+                <!-- Chapter Content Reader -->
+                <main class="md:col-span-8 p-5 space-y-3">
+                  <div class="flex items-center justify-between border-b pb-2" :style="`border-color: ${currentTheme.border};`">
+                    <span class="text-[10px] uppercase tracking-wider font-semibold opacity-70" x-text="`Bab ${previewChapter + 1}`"></span>
+                    <span class="text-[10px] opacity-50" x-text="`Penulis: ${formData.author || 'Tim Penulis'}`"></span>
+                  </div>
+
+                  <h3 class="text-base font-bold leading-snug" :style="`color: ${currentTheme.accent};`" 
+                      x-text="formData.chapters[previewChapter]?.title || formData.title || 'Judul Bab Utama'"></h3>
+
+                  <p class="text-[11px] leading-relaxed opacity-90">
+                    Ini adalah simulasi tampilan naskah interaktif pada web book. Konten disajikan secara responsif, cepat diakses tanpa beban unduhan file berlebih, dan didukung navigasi instan antar bab dari sidebar.
+                  </p>
+
+                  <!-- Enterprise Embed Box Simulation -->
+                  <div x-show="formData.features.embeds" class="p-3 rounded-lg border border-dashed flex items-center gap-2 text-[10px]"
+                       :style="`border-color: ${currentTheme.accent}; background-color: ${currentTheme.cardBg};`">
+                    <i class="fa-brands fa-youtube text-red-500 text-sm"></i>
+                    <span><strong>Interactive Embed Player:</strong> Siap disematkan video YouTube, player Spotify, atau podcast.</span>
+                  </div>
+
+                  <!-- Footer Reading Simulator Info -->
+                  <div class="pt-2 flex items-center justify-between text-[10px] opacity-60 border-t" :style="`border-color: ${currentTheme.border};`">
+                    <span x-text="`Kategori: ${formData.category || 'Umum'}`"></span>
+                    <span x-text="formData.selectedPackage === 'Paket Profesional' ? 'Export PDF Watermark Siap' : (formData.selectedPackage === 'Paket Enterprise' ? 'Custom Layout PDF' : 'PDF Standar')"></span>
+                  </div>
+                </main>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================= STEP 4: REVIEW & SUBMIT ================= -->
+      <div x-show="step === 4" x-cloak x-transition.opacity.duration.300ms>
+        <h2 class="text-xl font-semibold text-white mb-1">4. Review & Konfirmasi Penyerahan</h2>
+        <p class="text-sm text-slate-400 mb-6">Periksa kembali data konfigurasi sebelum dikirim ke tim pengembang.</p>
+
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-5 space-y-4 text-xs">
+          <div class="flex justify-between border-b border-slate-800 pb-2" x-show="formData.selectedPackage">
+            <span class="text-slate-400">Paket Layanan:</span>
+            <span class="font-bold text-emerald-400" x-text="formData.selectedPackage"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Judul Buku:</span>
+            <span class="font-semibold text-slate-100" x-text="formData.title || '-'"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Penulis:</span>
+            <span class="font-semibold text-slate-100" x-text="formData.author || '-'"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Branding (Logo & Favicon):</span>
+            <span class="font-semibold text-slate-100" x-text="`${formData.logoFileName ? 'Logo: ' + formData.logoFileName : 'Logo: Default'} • ${formData.faviconFileName ? 'Favicon: ' + formData.faviconFileName : 'Favicon: Default'}`"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Dukungan Bahasa:</span>
+            <span class="font-semibold text-slate-100" x-text="formData.selectedPackage === 'Paket Standar' ? '1 Bahasa (Indonesia)' : (formData.selectedPackage === 'Paket Profesional' ? 'Dual Bahasa (ID & EN)' : 'Unlimited Multi-Language')"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Export PDF:</span>
+            <span class="font-semibold text-slate-100" x-text="formData.selectedPackage === 'Paket Standar' ? 'Format Standar' : (formData.selectedPackage === 'Paket Profesional' ? 'PDF dengan Watermark' : 'Custom Layout PDF')"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Fitur Text-to-Speech (Audio):</span>
+            <span class="font-semibold" :class="formData.features.tts ? 'text-emerald-400' : 'text-slate-500'" x-text="formData.features.tts ? 'Aktif' : 'Tidak Termasuk (Paket Pro+)'"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Sistem Login Member:</span>
+            <span class="font-semibold" :class="formData.features.memberLogin ? 'text-emerald-400' : 'text-slate-500'" x-text="formData.features.memberLogin ? 'Aktif' : 'Tidak Termasuk (Paket Pro+)'"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Dashboard Database Admin:</span>
+            <span class="font-semibold" :class="formData.features.adminDashboard ? 'text-emerald-400' : 'text-slate-500'" x-text="formData.features.adminDashboard ? 'Aktif' : 'Tidak Termasuk (Paket Pro+)'"></span>
+          </div>
+
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Jumlah Bab:</span>
+            <span class="font-semibold text-slate-100" x-text="`${formData.chapters.length} Bab`"></span>
+          </div>
+
+          <div>
+            <span class="text-slate-400 block mb-1">Tema Desain & Domain:</span>
+            <div class="text-slate-300">
+              Tema: <span class="text-indigo-400 font-semibold uppercase" x-text="formData.selectedTheme"></span> | Domain: <span class="text-slate-100 font-mono" x-text="formData.customDomain || 'Bawaan Subdomain'"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Catatan Khusus untuk Developer (Opsional)</label>
+          <textarea x-model="formData.notes" rows="3" placeholder="Instruksi tambahan mengenai alur baca, posisi gambar, atau preferensi desain..." 
+                    class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="mt-8 pt-4 border-t border-slate-700/60 flex items-center justify-between">
+        <button @click="prevStep()" type="button" x-show="step > 1" 
+                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition">
+          &larr; Kembali
+        </button>
+        <div x-show="step === 1"></div>
+
+        <button @click="nextStep()" type="button" x-show="step < 4" 
+                class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow-lg shadow-indigo-600/30 transition">
+          Lanjut &rarr;
+        </button>
+
+        <button @click="submitForm()" type="button" x-show="step === 4" 
+                class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow-lg shadow-emerald-600/30 transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span>Kirim Konfigurasi Materi</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Alpine JS Logic -->
+  <script>
+    function configForm() {
+      return {
+        step: 1,
+        steps: ['Info Buku', 'Materi & Bab', 'Tampilan', 'Konfirmasi'],
+        lastSavedTime: '',
+        previewChapter: 0,
+        availablePackages: [
+          {
+            name: 'Paket Standar',
+            price: 'Rp 1.490k',
+            badge: 'Permulaan',
+            badgeClass: 'bg-slate-800 text-slate-300',
+            desc: '1 Bahasa Utama • Export PDF • Tanpa TTS & Member'
+          },
+          {
+            name: 'Paket Profesional',
+            price: 'Rp 2.990k',
+            badge: 'Paling Populer',
+            badgeClass: 'bg-indigo-900/80 text-indigo-300 border border-indigo-700/50',
+            desc: 'Dual Bahasa • TTS Audio • Login Member • Dashboard Analytics'
+          },
+          {
+            name: 'Paket Enterprise',
+            price: 'Rp 5.990k',
+            badge: 'Kustom Skala Besar',
+            badgeClass: 'bg-purple-900/80 text-purple-300 border border-purple-700/50',
+            desc: 'Unlimited Bahasa • TTS AI Natural • Multi-role • Full DB Analytics'
+          }
+        ],
+        themes: [
+          { id: 'dark', name: 'Dark Modern', bg: '#0f172a', text: '#f8fafc', accent: '#818cf8', headerBg: '#020617', sidebarBg: '#090d16', cardBg: '#1e293b', border: '#334155' },
+          { id: 'clean', name: 'Clean White', bg: '#ffffff', text: '#0f172a', accent: '#2563eb', headerBg: '#f1f5f9', sidebarBg: '#f8fafc', cardBg: '#f1f5f9', border: '#e2e8f0' },
+          { id: 'sepia', name: 'Warm Sepia', bg: '#fef3c7', text: '#78350f', accent: '#b45309', headerBg: '#fde68a', sidebarBg: '#fef9c3', cardBg: '#fef08a', border: '#fcd34d' },
+          { id: 'slate', name: 'Classic Editorial', bg: '#1e293b', text: '#f8fafc', accent: '#34d399', headerBg: '#0f172a', sidebarBg: '#162032', cardBg: '#334155', border: '#475569' }
+        ],
+        formData: {
+          selectedPackage: 'Paket Standar',
+          title: '',
+          subtitle: '',
+          author: '',
+          category: '',
+          description: '',
+          coverFileName: '',
+          logoFileName: '',
+          logoDataUrl: '',
+          faviconFileName: '',
+          faviconDataUrl: '',
+          sourceMethod: 'drive',
+          driveUrl: '',
+          documentFileName: '',
+          chapters: [
+            { title: 'Pendahuluan' },
+            { title: 'Bab 1: Konsep Utama' }
+          ],
+          selectedTheme: 'dark',
+          features: {
+            tts: false,
+            memberLogin: false,
+            adminDashboard: false,
+            progress: true,
+            embeds: false,
+          },
+          customDomain: '',
+          notes: ''
+        },
+        init() {
+          const STORAGE_KEY = 'webbook_dashboard_draft';
+          const savedDraft = localStorage.getItem(STORAGE_KEY);
+
+          // Pulihkan data dari localStorage jika ada
+          if (savedDraft) {
+            try {
+              const parsed = JSON.parse(savedDraft);
+              if (parsed.formData) {
+                this.formData = Object.assign({}, this.formData, parsed.formData);
+              }
+              if (parsed.step) {
+                this.step = parsed.step;
+              }
+            } catch (err) {
+              console.error('Gagal memuat draf dari localStorage:', err);
+            }
+          }
+
+          // Baca query params yang dikirim dari index.html
+          const urlParams = new URLSearchParams(window.location.search);
+          const pkg = urlParams.get('package');
+          const theme = urlParams.get('theme');
+          const title = urlParams.get('title');
+
+          const matchedPkg = this.availablePackages.find(p => pkg && (p.name === pkg || pkg.includes(p.name)));
+          if (matchedPkg) {
+            this.setPackage(matchedPkg.name);
+          } else if (!savedDraft) {
+            this.setPackage('Paket Standar');
+          }
+          if (theme && this.themes.some(t => t.id === theme)) {
+            this.formData.selectedTheme = theme;
+          }
+          if (title) this.formData.title = title;
+
+          // Rekam waktu awal draf
+          if (savedDraft) {
+            this.lastSavedTime = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+          }
+
+          // Pasang watcher Alpine.js untuk auto-save ke localStorage
+          this.$watch('formData', () => this.saveDraft(), { deep: true });
+          this.$watch('step', () => this.saveDraft());
+        },
+        get currentTheme() {
+          return this.themes.find(t => t.id === this.formData.selectedTheme) || this.themes[0];
+        },
+        saveDraft() {
+          try {
+            localStorage.setItem('webbook_dashboard_draft', JSON.stringify({
+              step: this.step,
+              formData: this.formData
+            }));
+            this.lastSavedTime = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+          } catch (err) {
+            console.warn('Penyimpanan lokal draf gagal:', err);
+          }
+        },
+        resetDraft() {
+          if (confirm('Apakah Anda yakin ingin mengosongkan formulir dan mereset draf? Semua isian akan kembali ke awal.')) {
+            localStorage.removeItem('webbook_dashboard_draft');
+            window.location.href = window.location.pathname;
+          }
+        },
+        setPackage(pkgName) {
+          this.formData.selectedPackage = pkgName;
+          if (pkgName === 'Paket Standar') {
+            this.formData.features.tts = false;
+            this.formData.features.memberLogin = false;
+            this.formData.features.adminDashboard = false;
+            this.formData.features.embeds = false;
+          } else if (pkgName === 'Paket Profesional') {
+            this.formData.features.tts = true;
+            this.formData.features.memberLogin = true;
+            this.formData.features.adminDashboard = true;
+            this.formData.features.embeds = false;
+          } else if (pkgName === 'Paket Enterprise') {
+            this.formData.features.tts = true;
+            this.formData.features.memberLogin = true;
+            this.formData.features.adminDashboard = true;
+            this.formData.features.embeds = true;
+          }
+        },
+        canAccess(feature) {
+          const pkg = this.formData.selectedPackage;
+          if (feature === 'tts' || feature === 'memberLogin' || feature === 'adminDashboard') return pkg !== 'Paket Standar';
+          if (feature === 'embeds') return pkg === 'Paket Enterprise';
+          return true;
+        },
+        goToStep(s) {
+          this.step = s;
+        },
+        validateCurrentStep() {
+          if (this.step === 1) {
+            if (!this.formData.title.trim() || !this.formData.author.trim()) {
+              alert('Mohon isi minimal Judul Utama Buku dan Nama Penulis sebelum melanjutkan.');
+              return false;
+            }
+          }
+          return true;
+        },
+        nextStep() {
+          if (!this.validateCurrentStep()) return;
+          if (this.step < 4) this.step = this.step + 1;
+        },
+        prevStep() {
+          if (this.step > 1) this.step--;
+        },
+        addChapter() {
+          this.formData.chapters.push({ title: '' });
+        },
+        removeChapter(index) {
+          if (this.formData.chapters.length > 1) {
+            this.formData.chapters.splice(index, 1);
+          }
+        },
+        handleCoverUpload(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          if (file.size > 3 * 1024 * 1024) {
+            alert('Ukuran file cover terlalu besar (Maksimal 3MB).');
+            e.target.value = '';
+            return;
+          }
+          this.formData.coverFileName = file.name;
+        },
+        handleLogoUpload(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          if (file.size > 1.5 * 1024 * 1024) {
+            alert('Ukuran file logo maksimal 1.5MB agar tidak memberatkan browser.');
+            this.removeLogo();
+            return;
+          }
+          if (file) {
+            this.formData.logoFileName = file.name;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              this.formData.logoDataUrl = event.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        },
+        removeLogo() {
+          this.formData.logoFileName = '';
+          this.formData.logoDataUrl = '';
+          if (this.$refs.logoInput) this.$refs.logoInput.value = '';
+        },
+        handleFaviconUpload(e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          if (file.size > 500 * 1024) {
+            alert('Ukuran favicon maksimal 500KB.');
+            this.removeFavicon();
+            return;
+          }
+          if (file) {
+            this.formData.faviconFileName = file.name;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              this.formData.faviconDataUrl = event.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        },
+        removeFavicon() {
+          this.formData.faviconFileName = '';
+          this.formData.faviconDataUrl = '';
+          if (this.$refs.faviconInput) this.$refs.faviconInput.value = '';
+        },
+        handleDocumentUpload(e) {
+          const file = e.target.files[0];
+          if (file) this.formData.documentFileName = file.name;
+        },
+        submitForm() {
+          const langDesc = this.formData.selectedPackage === 'Paket Standar' 
+            ? '1 Bahasa (ID)' 
+            : (this.formData.selectedPackage === 'Paket Profesional' ? 'Dual Bahasa (ID & EN)' : 'Unlimited Multi-Language');
+
+          const pdfDesc = this.formData.selectedPackage === 'Paket Standar'
+            ? 'PDF Standar'
+            : (this.formData.selectedPackage === 'Paket Profesional' ? 'PDF dengan Watermark' : 'Custom Layout PDF');
+
+          const message = `*KONFIRMASI PENYERAHAN MATERI WEB BOOK*%0A%0A` +
+            `*Paket Layanan:* ${encodeURIComponent(this.formData.selectedPackage || 'Paket Standar')}%0A` +
+            `*Judul Buku:* ${encodeURIComponent(this.formData.title || '-')}%0A` +
+            `*Penulis:* ${encodeURIComponent(this.formData.author || '-')}%0A` +
+            `*File Logo:* ${encodeURIComponent(this.formData.logoFileName || 'Default')}%0A` +
+            `*File Favicon:* ${encodeURIComponent(this.formData.faviconFileName || 'Default')}%0A` +
+            `*Dukungan Bahasa:* ${encodeURIComponent(langDesc)}%0A` +
+            `*Fitur TTS Audio:* ${this.formData.features.tts ? 'Aktif' : 'Tidak Termasuk'}%0A` +
+            `*Sistem Login Member:* ${this.formData.features.memberLogin ? 'Aktif' : 'Tidak Termasuk'}%0A` +
+            `*Dashboard Database Admin:* ${this.formData.features.adminDashboard ? 'Aktif' : 'Tidak Termasuk'}%0A` +
+            `*Export PDF:* ${encodeURIComponent(pdfDesc)}%0A` +
+            `*Jumlah Bab:* ${this.formData.chapters.length} Bab%0A` +
+            `*Tema Desain:* ${encodeURIComponent(this.formData.selectedTheme)}%0A` +
+            `*Metode Materi:* ${encodeURIComponent(this.formData.sourceMethod)} (${encodeURIComponent(this.formData.driveUrl || this.formData.documentFileName || '-')})%0A` +
+            `*Catatan:* ${encodeURIComponent(this.formData.notes || '-')}`;
+
+          // Bersihkan draf lokal setelah proses pengiriman dimulai
+          localStorage.removeItem('webbook_dashboard_draft');
+
+          const targetPhone = "6281234567890";
+          window.open(`https://wa.me/${targetPhone}?text=${message}`, '_blank', 'noopener,noreferrer');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
